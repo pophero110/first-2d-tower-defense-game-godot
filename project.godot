@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="first-2d-tower-defense-game"
+run/main_scene="uid://c4pkhcnyesfot"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
