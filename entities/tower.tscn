@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://cmbdbnu87us2l"]
+[gd_scene load_steps=22 format=3 uid="uid://cmbdbnu87us2l"]
 
 [ext_resource type="Script" uid="uid://ddwpsxohk3pxk" path="res://entities/tower.gd" id="1_20vcr"]
 [ext_resource type="Texture2D" uid="uid://duvlxd0imjqpk" path="res://assets/towers/missile/tier1/gun_shoot_a_00.png" id="1_ypfbe"]
 [ext_resource type="Texture2D" uid="uid://c6eyxqjomob1m" path="res://assets/towers/missile/tier1/gun_shoot_a_01.png" id="2_20vcr"]
 [ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://projectile.tscn" id="2_erj2q"]
 [ext_resource type="Texture2D" uid="uid://bcwrxwx6e6jwt" path="res://assets/towers/missile/tier1/gun_shoot_a_02.png" id="3_erj2q"]
+[ext_resource type="Texture2D" uid="uid://kkffgw8eisn4" path="res://assets/towers/missile/tier1/gun_idle_00.png" id="3_orfwx"]
 [ext_resource type="Texture2D" uid="uid://ck5fq6tiqxyfg" path="res://assets/towers/missile/tier1/gun_shoot_a_03.png" id="4_orfwx"]
 [ext_resource type="Texture2D" uid="uid://ctojcimwic7in" path="res://assets/towers/missile/tier1/gun_shoot_a_04.png" id="5_ob3u2"]
 [ext_resource type="Texture2D" uid="uid://dpe33yxpcxpc" path="res://assets/towers/missile/tier1/gun_shoot_a_05.png" id="6_gprp4"]
@@ -21,6 +22,14 @@
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_b7ki5"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_orfwx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_ypfbe")
@@ -45,7 +54,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("8_p243b")
+}],
+"loop": true,
+"name": &"left_shooting",
+"speed": 7.0
 }, {
+"frames": [{
 "duration": 1.0,
 "texture": ExtResource("9_bkigt")
 }, {
@@ -71,8 +85,8 @@ animations = [{
 "texture": ExtResource("16_t7q71")
 }],
 "loop": true,
-"name": &"shooting",
-"speed": 5.0
+"name": &"right_shooting",
+"speed": 7.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ypfbe"]
@@ -84,9 +98,7 @@ projectile_scene = ExtResource("2_erj2q")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_b7ki5")
-animation = &"shooting"
-frame = 3
-frame_progress = 0.430628
+animation = &"right_shooting"
 
 [node name="Detector" type="Area2D" parent="."]
 

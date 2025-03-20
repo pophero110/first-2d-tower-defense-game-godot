@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var health = 100
+@export var health = 100
 		
 # Called when the node enters the scene tree for the first time.
 func _ready():

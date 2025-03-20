@@ -86,7 +86,6 @@ tile_set = SubResource("TileSet_urblq")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-one_shot = true
 autostart = true
 
 [node name="MobPath" type="Path2D" parent="."]

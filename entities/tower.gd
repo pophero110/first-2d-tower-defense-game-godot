@@ -1,12 +1,13 @@
 extends Node2D
 
 @export var projectile_scene: PackedScene
-var attack_rate = 1  # in second
-var attack_range = 200
+@export var attack_rate = 1  # in second
+@export var attack_range = 200
 
 var enemies = []  # Stores enemies inside the attack range
 var timer = null
 var target = null
+var isLeftShoot = true
 
 func _draw():
 	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
@@ -30,6 +31,9 @@ func _process(delta):
 	if target:
 		var direction = target.global_position - global_position
 		rotation = direction.angle()
+	else:
+		$AnimatedSprite2D.play("idle")
+		rotation = 0
 
 func _find_target_in_range():
 	var closest_enemy = null
@@ -45,7 +49,14 @@ func _find_target_in_range():
 func _on_attack_timer_timeout():
 	if (target):
 		attack()
+
 func attack():
+	if (isLeftShoot):
+		isLeftShoot = false
+		$AnimatedSprite2D.play("left_shooting")
+	else:
+		isLeftShoot = true
+		$AnimatedSprite2D.play("right_shooting")
 	fire_projectile(target)
 
 # Fire a projectile towards the target

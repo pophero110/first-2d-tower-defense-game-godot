@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://d43f4qy6kiom"]
+[gd_scene load_steps=11 format=3 uid="uid://d43f4qy6kiom"]
 
-[ext_resource type="Texture2D" uid="uid://bf0mil6d8volr" path="res://assets/projectiles/bullet/idle_00.png" id="1_dgwo2"]
 [ext_resource type="Script" uid="uid://js6yq7xf7rlw" path="res://projectile.gd" id="1_sxmqc"]
 [ext_resource type="Texture2D" uid="uid://wn1i5sww5fk5" path="res://assets/projectiles/bullet/hit_vfx_00.png" id="2_0c7x6"]
-[ext_resource type="Texture2D" uid="uid://dbqyosagvpaia" path="res://assets/projectiles/bullet/idle_01.png" id="2_sxmqc"]
-[ext_resource type="Texture2D" uid="uid://dsec4fsb0en1n" path="res://assets/projectiles/bullet/idle_02.png" id="3_2xblw"]
 [ext_resource type="Texture2D" uid="uid://b4r3rhnlj8ec6" path="res://assets/projectiles/bullet/hit_vfx_01.png" id="3_wpwum"]
 [ext_resource type="Texture2D" uid="uid://btxuab13kso0" path="res://assets/projectiles/bullet/hit_vfx_02.png" id="4_nsmhe"]
+[ext_resource type="Texture2D" uid="uid://ohnea6uxvye8" path="res://assets/projectiles/shell/idle_00.png" id="5_wpwum"]
+[ext_resource type="Texture2D" uid="uid://b5y5o3adx70cp" path="res://assets/projectiles/shell/idle_01.png" id="6_nsmhe"]
+[ext_resource type="Texture2D" uid="uid://byc3lqd3dsu2j" path="res://assets/projectiles/shell/idle_02.png" id="7_1umjp"]
+[ext_resource type="Texture2D" uid="uid://1lich2fn28a4" path="res://assets/projectiles/shell/idle_03.png" id="8_se2ie"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dgwo2"]
 radius = 7.0
@@ -30,13 +31,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_dgwo2")
+"texture": ExtResource("5_wpwum")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_sxmqc")
+"texture": ExtResource("6_nsmhe")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_2xblw")
+"texture": ExtResource("7_1umjp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_se2ie")
 }],
 "loop": true,
 "name": &"idle",

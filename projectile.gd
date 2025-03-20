@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var speed: float = 200  # Speed of the projectile
+@export var speed: float = 400  # Speed of the projectile
 var target: Node2D  # The target to move towards
 var damage: int = 10  # Damage dealt to the target
 var hit_distance: int = 40
