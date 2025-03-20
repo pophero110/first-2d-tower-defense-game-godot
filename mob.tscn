@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmkwopufoodck"]
+[gd_scene load_steps=12 format=3 uid="uid://cmkwopufoodck"]
 
 [ext_resource type="Texture2D" uid="uid://ca5yac85n8rgn" path="res://assets/enemies/infantry/tier1/move_00.png" id="1_gfurk"]
 [ext_resource type="Texture2D" uid="uid://b6i1emastvupa" path="res://assets/enemies/infantry/tier1/move_01.png" id="2_ieysi"]
@@ -42,7 +42,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ieysi"]
+radius = 24.0
+
+[node name="Mob" type="CharacterBody2D" groups=["mob"]]
+script = ExtResource("9_ieysi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gfurk")
 animation = &"move"
-script = ExtResource("9_ieysi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ieysi")
