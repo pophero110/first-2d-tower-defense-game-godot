@@ -11,18 +11,22 @@ func set_target(enemy: Node2D):
 # Move towards the target in the _process method
 func _process(delta):
 	if target:
-		$AnimatedSprite2D.play("idle")
 		# Get direction to target
-		var direction = target.global_position - global_position
-		var distance = direction.length()
+		var to_target = target.global_position - global_position
+		var distance = to_target.length()
 		
 		if distance <= hit_distance:
 			hit_target()
 			return
 		# Rotate the bullet to face the target
-		rotation = direction.angle()
-		# Move towards the target manually (apply velocity)
-		position += Vector2(cos(rotation), sin(rotation)) * speed * delta
+		rotation = to_target.angle()
+		
+		# Calculate the direction vector based on the current rotation
+		var direction = to_target.normalized()		
+		var velocity = direction * speed
+		var movement = velocity * delta 
+		# updates the position by adding the velocity (scaled by delta).
+		position += movement
 
 # Deal damage when hitting the target
 func hit_target():

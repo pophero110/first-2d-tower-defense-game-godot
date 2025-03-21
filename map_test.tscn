@@ -10,7 +10,6 @@ script = ExtResource("1_c7aqf")
 mob_scene = ExtResource("2_eab4r")
 
 [node name="Tower" parent="." instance=ExtResource("3_c7aqf")]
-attack_range = 400
 
 [node name="Mob" parent="." instance=ExtResource("2_eab4r")]
 position = Vector2(-8, -136)

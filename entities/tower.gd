@@ -1,68 +1,81 @@
 extends Node2D
 
 @export var projectile_scene: PackedScene
-@export var attack_rate = 1  # in second
-@export var attack_range = 200
+@export var attack_rate: float = 1  # Attack rate in seconds
+@export var attack_range: float = 200  # Attack range in pixels
 
-var enemies = []  # Stores enemies inside the attack range
-var timer = null
-var target = null
-var isLeftShoot = true
+var enemies = []  # List of enemies within the attack range
+var timer: Timer = null
+var target: Node2D = null
+var is_left_shoot: bool = true
 
+# Draw the attack range as a red circle
 func _draw():
 	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
-	
-# Called when the node enters the scene tree for the first time.
+
+# Called when the node enters the scene tree for the first time
 func _ready():
-	# Create firing timer
+	# Initialize and set up the attack timer
 	timer = Timer.new()
 	timer.wait_time = attack_rate
 	timer.autostart = true
 	timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(timer)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Called every frame to update the state
 func _process(delta):
-	# Get all enemies from the enemies group
+	# Update the list of enemies in the attack range
 	enemies = get_tree().get_nodes_in_group("mob")
-	# Find valid target in range
+	# Find the closest target in range
 	target = _find_target_in_range()
-	# Rotate tower to face target if we have one
+	# Rotate the tower towards the target if one exists
 	if target:
-		var direction = target.global_position - global_position
-		rotation = direction.angle()
+		rotate_towards_target(target)
 	else:
-		$AnimatedSprite2D.play("idle")
-		rotation = 0
+		reset_tower_rotation()
 
-func _find_target_in_range():
-	var closest_enemy = null
-	var closest_distance = attack_range + 10 # Start with something larger than range
+# Find the closest enemy within attack range
+func _find_target_in_range() -> Node2D:
+	var closest_enemy: Node2D = null
+	var closest_distance: float = attack_range + 10  # Start with a value larger than the attack range
 	for enemy in enemies:
 		var distance = global_position.distance_to(enemy.global_position)
-		# Check if this enemy is in range and closer than previously found enemies
+		# If the enemy is within range and closer than the previous one, update the target
 		if distance <= attack_range and distance < closest_distance:
 			closest_enemy = enemy
 			closest_distance = distance
 	return closest_enemy
 
+# Rotate the tower to face the target
+func rotate_towards_target(target: Node2D):
+	var direction = target.global_position - global_position
+	rotation = direction.angle()
+
+# Reset the tower's rotation if no target is found
+func reset_tower_rotation():
+	rotation = 0
+	$AnimatedSprite2D.play("idle")  # Play idle animation
+
+# Called when the attack timer times out
 func _on_attack_timer_timeout():
-	if (target):
+	if target:
 		attack()
 
+# Perform the attack and switch shooting direction
 func attack():
-	if (isLeftShoot):
-		isLeftShoot = false
+	# Alternate between left and right shooting animations
+	if is_left_shoot:
+		is_left_shoot = false
 		$AnimatedSprite2D.play("left_shooting")
 	else:
-		isLeftShoot = true
+		is_left_shoot = true
 		$AnimatedSprite2D.play("right_shooting")
-	fire_projectile(target)
+	# Fire a projectile towards the target
+	fire_projectile()
 
 # Fire a projectile towards the target
-func fire_projectile(target):
-	var projectile = projectile_scene.instantiate()  # Create a new projectile
+func fire_projectile():
+	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
 	get_parent().add_child(projectile)  # Add it to the scene
 	projectile.position = position  # Set the projectile's position to the tower's position
 	projectile.set_target(target)  # Pass the target to the projectile
-	
