@@ -99,7 +99,7 @@ projectile_scene = ExtResource("2_erj2q")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_b7ki5")
 animation = &"idle"
-frame_progress = 0.444267
+frame_progress = 0.958686
 
 [node name="Detector" type="Area2D" parent="."]
 
