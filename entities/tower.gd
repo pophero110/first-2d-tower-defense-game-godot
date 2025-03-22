@@ -2,7 +2,7 @@ extends Node2D
 
 @export var projectile_scene: PackedScene
 @export var attack_rate: float = 1  # Attack rate in seconds
-@export var attack_range: float = 200  # Attack range in pixels
+@export var attack_range: float = 150  # Attack range in pixels
 
 var enemies = []  # List of enemies within the attack range
 var timer: Timer = null

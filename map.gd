@@ -12,16 +12,22 @@ func _unhandled_input(event):
 		# Try to place tower at mouse position
 		var mouse_pos = get_global_mouse_position()
 		var tile_pos = ground_tilemap.local_to_map(mouse_pos)
-		place_tower(tile_pos)
+		if (isPlacable()): place_tower(tile_pos)
 
-func place_tower(tile_pos: Vector2i) -> bool:
-		# Instance the tower scene
+func place_tower(tile_pos: Vector2i):
 		var tower = tower_scene.instantiate()
 		add_child(tower)
 		# Position the tower at the center of the tile
 		var world_pos = ground_tilemap.map_to_local(tile_pos)
 		tower.global_position = world_pos
-		return true
+
+func isPlacable() -> bool:
+	var clicked_cell = ground_tilemap.local_to_map(ground_tilemap.get_local_mouse_position())
+	var data = ground_tilemap.get_cell_tile_data(clicked_cell)
+	if data:
+		return data.get_custom_data("placable")
+	else:
+		return false
 		
 func _on_spawn_timer_timeout():
 	var path_follow_2d = PathFollow2D.new()
