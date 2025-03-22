@@ -7,11 +7,11 @@ extends Node2D
 var enemies = []  # List of enemies within the attack range
 var timer: Timer = null
 var target: Node2D = null
-var is_left_shoot: bool = true
+var ability: Node2D = null
 
 # Draw the attack range as a red circle
 func _draw():
-	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
+	draw_circle(Vector2.ZERO, $Detector/CollisionShape2D.get_shape().radius, Color(1, 0, 0, 0.3))
 
 # Called when the node enters the scene tree for the first time
 func _ready():
@@ -21,14 +21,14 @@ func _ready():
 	timer.autostart = true
 	timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(timer)
+	
+	ability = preload("res://rapid_fire.tscn").instantiate()
+	ability.tower = self
+	add_child(ability)
 
 # Called every frame to update the state
 func _process(delta):
-	# Update the list of enemies in the attack range
-	enemies = get_tree().get_nodes_in_group("mob")
-	# Find the closest target in range
-	target = _find_target_in_range()
-	# Rotate the tower towards the target if one exists
+	target = enemies.front()
 	if target:
 		rotate_towards_target(target)
 	else:
@@ -36,6 +36,7 @@ func _process(delta):
 
 # Find the closest enemy within attack range
 func _find_target_in_range() -> Node2D:
+	enemies = get_tree().get_nodes_in_group("mob")
 	var closest_enemy: Node2D = null
 	var closest_distance: float = attack_range + 10  # Start with a value larger than the attack range
 	for enemy in enemies:
@@ -46,36 +47,43 @@ func _find_target_in_range() -> Node2D:
 			closest_distance = distance
 	return closest_enemy
 
-# Rotate the tower to face the target
 func rotate_towards_target(target: Node2D):
 	var direction = target.global_position - global_position
 	rotation = direction.angle()
 
-# Reset the tower's rotation if no target is found
 func reset_tower_rotation():
 	rotation = 0
-	$AnimatedSprite2D.play("idle")  # Play idle animation
 
-# Called when the attack timer times out
 func _on_attack_timer_timeout():
 	if target:
 		attack()
 
-# Perform the attack and switch shooting direction
 func attack():
-	# Alternate between left and right shooting animations
-	if is_left_shoot:
-		is_left_shoot = false
-		$AnimatedSprite2D.play("left_shooting")
-	else:
-		is_left_shoot = true
-		$AnimatedSprite2D.play("right_shooting")
-	# Fire a projectile towards the target
+	ability.activate()
 	fire_projectile()
+	play_shoot_animation()
 
-# Fire a projectile towards the target
+func play_shoot_animation():
+	$AnimatedSprite2D.animation = "shoot"
+	var frame_count = $AnimatedSprite2D.get_sprite_frames().get_frame_count("shoot")
+	var fsp = $AnimatedSprite2D.get_sprite_frames().get_animation_speed("shoot")
+	var animation_duration = fsp / frame_count
+	$AnimatedSprite2D.frame = 0  # Start from the first frame
+	$AnimatedSprite2D.speed_scale = animation_duration / attack_rate
+	$AnimatedSprite2D.play()
+
 func fire_projectile():
 	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
 	get_parent().add_child(projectile)  # Add it to the scene
 	projectile.position = position  # Set the projectile's position to the tower's position
 	projectile.set_target(target)  # Pass the target to the projectile
+
+func adjust_attack_rate(attack_rate: float):
+	timer.wait_time = attack_rate
+	attack_rate = attack_rate
+
+func _on_detector_body_entered(body):
+	enemies.append(body)
+
+func _on_detector_body_exited(body):
+	enemies.erase(body)
