@@ -11,10 +11,6 @@ func _ready():
 	$DurationTimer.wait_time = durationInSeconds
 	if (tower == null): print("no tower link to this ability")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 func isInCooldown():
 	return !$CooldownTimer.is_stopped()
 	

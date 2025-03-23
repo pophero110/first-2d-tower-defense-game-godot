@@ -91,12 +91,10 @@ tile_set = SubResource("TileSet_urblq")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
+one_shot = true
 autostart = true
 
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_e0an3")
-
-[node name="Tower" parent="." instance=ExtResource("3_p5pve")]
-position = Vector2(704, 696)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

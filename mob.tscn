@@ -54,3 +54,8 @@ animation = &"move"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ieysi")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_right = 48.0
+offset_bottom = 8.0
+show_percentage = false

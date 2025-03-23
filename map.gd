@@ -37,3 +37,8 @@ func _on_spawn_timer_timeout():
 	
 	$MobPath.add_child(path_follow_2d)
 	path_follow_2d.add_child(mob)
+	#
+	#var mob_health_bar = ProgressBar.new();
+	#mob_health_bar.set_script(load("res://health_bar.gd"))
+	#mob_health_bar.target = mob
+	#mob.add_child(mob_health_bar)

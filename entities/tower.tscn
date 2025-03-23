@@ -53,7 +53,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ypfbe"]
-radius = 183.098
+radius = 150.0
 
 [node name="Tower" type="Node2D"]
 script = ExtResource("1_20vcr")
