@@ -2,11 +2,12 @@ extends Area2D
 
 @export var speed: float = 400  # Speed of the projectile
 var target: Node2D  # The target to move towards
-var damage: int = 30  # Damage dealt to the target
+var damage: int = 0  # Damage dealt to the target
 var hit_distance: int = 40
 
-func set_target(enemy: Node2D):
-	target = enemy
+func _initialize(enemy: Node2D = null, damage: int = 0):
+	self.target = enemy
+	self.damage = damage
 
 func _process(delta):
 	if target:

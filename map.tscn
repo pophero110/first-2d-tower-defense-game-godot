@@ -53,7 +53,6 @@ texture_region_size = Vector2i(128, 128)
 6:5/0 = 0
 0:6/0 = 0
 1:6/0 = 0
-1:6/0/custom_data_0 = true
 2:6/0 = 0
 3:6/0 = 0
 4:6/0 = 0
@@ -71,30 +70,136 @@ texture_region_size = Vector2i(128, 128)
 tile_size = Vector2i(128, 128)
 custom_data_layer_0/name = "placable"
 custom_data_layer_0/type = 1
-sources/1 = SubResource("TileSetAtlasSource_p5pve")
+sources/0 = SubResource("TileSetAtlasSource_p5pve")
 
 [sub_resource type="Curve2D" id="Curve2D_e0an3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 576, 576, 0, 0, 0, 0, 1728, 576, 0, 0, 0, 0, 1728, 1088, 0, 0, 0, 0, 576, 1088, 0, 0, 0, 0, 576, 576)
+"points": PackedVector2Array(0, 0, 0, 0, 64, 64, 0, 0, 0, 0, 960, 64, 0, 0, 0, 0, 960, 576, 0, 0, 0, 0, 64, 576, 0, 0, 0, 0, 64, 64)
 }
 point_count = 5
 
 [node name="Node2D" type="Node2D"]
-position = Vector2(-248, -240)
 script = ExtResource("1_p5pve")
 mob_scene = ExtResource("2_p5pve")
 tower_scene = ExtResource("3_p5pve")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAAFAAQAAQAEAAIAAAAFAAUAAQABAAEAAAAFAAYAAQABAAEAAAAGAAQAAQAEAAIAAAAGAAUAAQABAAEAAAAGAAYAAQABAAEAAAAHAAQAAQAEAAIAAAAHAAUAAQABAAEAAAAHAAYAAQABAAEAAAAIAAQAAQAEAAIAAAAIAAUAAQABAAEAAAAIAAYAAQABAAEAAAAJAAQAAQAEAAIAAAAJAAUAAQABAAEAAAAJAAYAAQABAAEAAAAKAAQAAQAEAAIAAAAKAAUAAQABAAEAAAAKAAYAAQABAAEAAAALAAQAAQAEAAIAAAALAAUAAQABAAEAAAALAAYAAQABAAEAAAAMAAQAAQAEAAIAAAAMAAUAAQABAAEAAAAMAAYAAQABAAEAAAAEAAgAAQAEAAIAAAAFAAcAAQABAAEAAAAFAAgAAQAEAAIAAAAGAAcAAQABAAEAAAAGAAgAAQAEAAIAAAAHAAcAAQABAAEAAAAHAAgAAQAEAAIAAAAIAAcAAQABAAEAAAAIAAgAAQAEAAIAAAAJAAcAAQABAAEAAAAJAAgAAQAEAAIAAAAKAAcAAQABAAEAAAAKAAgAAQAEAAIAAAALAAcAAQABAAEAAAALAAgAAQAEAAIAAAAMAAcAAQABAAEAAAAMAAgAAQAEAAIAAAANAAUAAQAEAAIAAAANAAYAAQAEAAIAAAANAAcAAQAEAAIAAAANAAgAAQAEAAIAAAANAAQAAQAEAAIAAAAEAAQAAQAEAAIAAAAEAAUAAQAEAAIAAAAEAAYAAQAEAAIAAAAEAAcAAQAEAAIAAAA=")
+position = Vector2(0, 255)
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAIAAAABAAAAAAAEAAIAAAACAAAAAAAEAAIAAAADAAAAAAAEAAIAAAAEAAAAAAAEAAIAAAAFAAAAAAAEAAIAAAAGAAAAAAAEAAIAAAAHAAAAAAAEAAIAAAAHAAEAAAAEAAIAAAAHAAIAAAAEAAIAAAAHAAMAAAAEAAIAAAAAAAMAAAAEAAIAAAAAAAIAAAAEAAIAAAAAAAEAAAAEAAIAAAAAAAQAAAAEAAIAAAABAAQAAAAEAAIAAAACAAQAAAAEAAIAAAADAAQAAAAEAAIAAAAEAAQAAAAEAAIAAAAFAAQAAAAEAAIAAAAGAAQAAAAEAAIAAAAHAAQAAAAEAAIAAAAGAAMAAAABAAEAAAAFAAMAAAABAAEAAAAEAAMAAAABAAEAAAADAAMAAAABAAEAAAACAAMAAAABAAEAAAABAAMAAAABAAEAAAABAAIAAAABAAEAAAACAAIAAAABAAEAAAADAAIAAAABAAEAAAAEAAIAAAABAAEAAAAFAAIAAAABAAEAAAAGAAIAAAABAAEAAAAGAAEAAAABAAEAAAAFAAEAAAABAAEAAAAEAAEAAAABAAEAAAADAAEAAAABAAEAAAACAAEAAAABAAEAAAABAAEAAAABAAEAAAA=")
 tile_set = SubResource("TileSet_urblq")
+
+[node name="MobPath" type="Path2D" parent="."]
+position = Vector2(0, 256)
+curve = SubResource("Curve2D_e0an3")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-one_shot = true
 autostart = true
 
-[node name="MobPath" type="Path2D" parent="."]
-curve = SubResource("Curve2D_e0an3")
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 920.0
+offset_right = 1013.0
+offset_bottom = 1391.0
+
+[node name="Resource" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_right = 564.0
+offset_bottom = 432.0
+theme_override_constants/separation = 20
+
+[node name="Gold" type="Label" parent="UI/Resource"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Gold: 0"
+
+[node name="KillCount" type="Label" parent="UI/Resource"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Kill: 0"
+
+[node name="Stats" type="Label" parent="UI/Resource"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Stats: 
+Attack Speed:
+Attack Damage: "
+autowrap_mode = 2
+
+[node name="Ability" type="Label" parent="UI/Resource"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ability:
+Cooldown:
+Description:"
+autowrap_mode = 2
+
+[node name="Buy" type="GridContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 57.5
+offset_right = 515.5
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_constants/v_separation = 20
+columns = 3
+
+[node name="DecAtkRateLabel" type="Label" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 16
+text = "Decrease Attack Rate by 10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="IncAtkDmgLabel" type="Label" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 16
+text = "Increast Attack Damage by 10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="DecAbilityCDLabel" type="Label" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 16
+text = "Decreae Ability Cooldown by 10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="IncAtkRate" type="Button" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Buy: 50 Gold"
+autowrap_mode = 2
+
+[node name="IncAtkDmg" type="Button" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Buy: 50 Gold"
+autowrap_mode = 2
+
+[node name="DecAbilityCD" type="Button" parent="UI/Buy"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Buy: 50 Gold"
+autowrap_mode = 2
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/Buy/IncAtkRate" to="." method="_on_dec_atk_rate_pressed"]
+[connection signal="pressed" from="UI/Buy/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]
+[connection signal="pressed" from="UI/Buy/DecAbilityCD" to="." method="_on_dec_ability_cd_pressed"]

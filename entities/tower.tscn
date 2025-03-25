@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmbdbnu87us2l"]
+[gd_scene load_steps=16 format=3 uid="uid://cmbdbnu87us2l"]
 
 [ext_resource type="Script" uid="uid://ddwpsxohk3pxk" path="res://entities/tower.gd" id="1_20vcr"]
 [ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://projectile.tscn" id="2_erj2q"]
@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://ckup7gvhdkg6w" path="res://assets/towers/cannon/tier1/gun_shoot_05.png" id="9_20vcr"]
 [ext_resource type="Texture2D" uid="uid://8qmemciwoyjp" path="res://assets/towers/cannon/tier1/gun_shoot_06.png" id="10_erj2q"]
 [ext_resource type="Texture2D" uid="uid://c5ydk57gjxsxa" path="res://assets/towers/cannon/tier1/gun_shoot_07.png" id="11_orfwx"]
+[ext_resource type="AudioStream" uid="uid://b1yvmtr2k424w" path="res://assets/sounds/gatling.wav" id="12_4hh3e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1s3se"]
+bg_color = Color(0.314656, 0.608943, 0.955922, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ob3u2"]
 animations = [{
@@ -59,6 +63,15 @@ radius = 150.0
 script = ExtResource("1_20vcr")
 projectile_scene = ExtResource("2_erj2q")
 
+[node name="AbilityCooldownProgressBar" type="ProgressBar" parent="."]
+offset_left = -40.0
+offset_top = 40.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_1s3se")
+step = 0.05
+show_percentage = false
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_ob3u2")
@@ -66,9 +79,13 @@ animation = &"idle"
 
 [node name="Detector" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector" groups=["tower"]]
 position = Vector2(-2, 2)
 shape = SubResource("CircleShape2D_ypfbe")
+
+[node name="ShootSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_4hh3e")
+volume_db = -16.6
 
 [connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
 [connection signal="body_exited" from="Detector" to="." method="_on_detector_body_exited"]

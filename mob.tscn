@@ -1,17 +1,51 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmkwopufoodck"]
+[gd_scene load_steps=20 format=3 uid="uid://cmkwopufoodck"]
 
 [ext_resource type="Texture2D" uid="uid://ca5yac85n8rgn" path="res://assets/enemies/infantry/tier1/move_00.png" id="1_gfurk"]
+[ext_resource type="Texture2D" uid="uid://d1qw5v5llr5ht" path="res://assets/enemies/infantry/tier1/die_00.png" id="2_h0ign"]
 [ext_resource type="Texture2D" uid="uid://b6i1emastvupa" path="res://assets/enemies/infantry/tier1/move_01.png" id="2_ieysi"]
+[ext_resource type="Texture2D" uid="uid://dk5vbygxo1v3g" path="res://assets/enemies/infantry/tier1/die_01.png" id="3_6ak38"]
 [ext_resource type="Texture2D" uid="uid://b8unit5kja48m" path="res://assets/enemies/infantry/tier1/move_02.png" id="3_cixyi"]
 [ext_resource type="Texture2D" uid="uid://d0sjwqto7mfmw" path="res://assets/enemies/infantry/tier1/move_03.png" id="4_7ulmv"]
+[ext_resource type="Texture2D" uid="uid://becov0l8pvmjy" path="res://assets/enemies/infantry/tier1/die_02.png" id="4_rxhkm"]
+[ext_resource type="Texture2D" uid="uid://dn8870l5fmxnx" path="res://assets/enemies/infantry/tier1/die_03.png" id="5_mhy1y"]
 [ext_resource type="Texture2D" uid="uid://c6tei2a1r847o" path="res://assets/enemies/infantry/tier1/move_04.png" id="5_pcqmr"]
+[ext_resource type="Texture2D" uid="uid://6ix8dqse55fv" path="res://assets/enemies/infantry/tier1/die_04.png" id="6_gy8bd"]
 [ext_resource type="Texture2D" uid="uid://b47tc47b2eudq" path="res://assets/enemies/infantry/tier1/move_05.png" id="6_jbnni"]
+[ext_resource type="Texture2D" uid="uid://dyp8lc0wliu34" path="res://assets/enemies/infantry/tier1/die_05.png" id="7_srff1"]
 [ext_resource type="Texture2D" uid="uid://bijwfmjkgdfsh" path="res://assets/enemies/infantry/tier1/move_06.png" id="7_yscv0"]
 [ext_resource type="Texture2D" uid="uid://bdlt5vb1br1sx" path="res://assets/enemies/infantry/tier1/move_07.png" id="8_eqsov"]
+[ext_resource type="Texture2D" uid="uid://cxsa66s42j8yb" path="res://assets/enemies/infantry/tier1/die_06.png" id="8_hpl8x"]
 [ext_resource type="Script" uid="uid://bhn64v63wojtn" path="res://mob.gd" id="9_ieysi"]
+[ext_resource type="AudioStream" uid="uid://bsd77i4w24a2" path="res://assets/sounds/male-death-sound-128357.mp3" id="17_h0ign"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfurk"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_h0ign")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6ak38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rxhkm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_mhy1y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gy8bd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_srff1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hpl8x")
+}],
+"loop": false,
+"name": &"die",
+"speed": 6.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_gfurk")
@@ -56,6 +90,11 @@ animation = &"move"
 shape = SubResource("CircleShape2D_ieysi")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
-offset_right = 48.0
-offset_bottom = 8.0
+offset_left = -24.0
+offset_top = -40.0
+offset_right = 24.0
+offset_bottom = -32.0
 show_percentage = false
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_h0ign")

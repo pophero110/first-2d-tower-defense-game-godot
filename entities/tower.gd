@@ -3,7 +3,10 @@ extends Node2D
 @export var projectile_scene: PackedScene
 @export var attack_rate: float = 1  # Attack rate in seconds
 @export var attack_range: float = 150  # Attack range in pixels
+@export var attack_damage: float = 10
+@export var ability_cooldown_in_seconds: float = 10
 @onready var detectorCollisionCircle = $Detector/CollisionShape2D
+@onready var ability_cooldown_progress_bar = $AbilityCooldownProgressBar
 
 var enemies = []  # List of enemies within the attack range3r
 var timer: Timer = null
@@ -24,19 +27,27 @@ func _ready():
 	add_child(timer)
 	
 	ability = preload("res://rapid_fire.tscn").instantiate()
+	ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
 	ability.tower = self
 	add_child(ability)
 	
 	detectorCollisionCircle.shape.radius = attack_range
+	
+	ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
+	ability_cooldown_progress_bar.max_value = ability_cooldown_in_seconds
 
 # Called every frame to update the state
 func _process(_delta):
-	if !enemies.is_empty():
-		target = enemies.front()
-		rotate_towards_target()
-	else:
+	# TODO: potential optimazation
+	ability_cooldown_progress_bar.rotation = -rotation
+	ability_cooldown_progress_bar.global_position = global_position + Vector2(-40, 40)
+	enemies = enemies.filter(func(enemy): return enemy.health > 0)
+	if (enemies.is_empty()):
 		target = null
 		reset_tower_rotation()
+	else: 
+		target = enemies.front()
+		rotate_towards_target()
 
 # Find the closest enemy within attack range
 #func _find_target_in_range() -> Node2D:
@@ -59,11 +70,13 @@ func reset_tower_rotation():
 	rotation = 0
 
 func _on_attack_timer_timeout():
+	timer.wait_time = self.attack_rate
 	if target:
 		attack()
 
 func attack():
-	ability.activate()
+	$ShootSound.play()
+	ability.activate(ability_cooldown_in_seconds)
 	fire_projectile()
 	play_shoot_animation()
 
@@ -78,13 +91,9 @@ func play_shoot_animation():
 
 func fire_projectile():
 	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
+	projectile._initialize(target, attack_damage)
 	get_parent().add_child(projectile)  # Add it to the scene
 	projectile.position = position  # Set the projectile's position to the tower's position
-	projectile.set_target(target)  # Pass the target to the projectile
-
-func adjust_attack_rate(new_attack_rate: float):
-	self.attack_rate = new_attack_rate
-	timer.wait_time = self.attack_rate
 
 func _on_detector_body_entered(body):
 	enemies.append(body)

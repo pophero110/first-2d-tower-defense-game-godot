@@ -3,9 +3,11 @@ extends CharacterBody2D
 @export var health = 100
 @onready var health_bar: ProgressBar = $HealthBar
 signal health_changed(newHealth: int)
+signal died
 		
 func _ready():
-	$AnimatedSprite2D.play()
+	$AnimatedSprite2D.play("move")
+	
 	health_bar.max_value = health
 	health_bar.value = health
 	update_health_bar_color()
@@ -22,8 +24,15 @@ func take_damage(amount):
 	update_health_bar_color()
 	health_changed.emit(health)
 	if health <= 0:
-		queue_free()
-		
+		$DeathSound.play()
+		$AnimatedSprite2D.play("die")
+		died.emit()
+		get_parent().set_process(false)
+		$AnimatedSprite2D.animation_finished.connect(_on_die_animation_finished)
+
+func _on_die_animation_finished():
+	get_parent().queue_free() # Remove mob and also PathFollow2D
+	
 func update_health_bar_color():
 	var fill_style: StyleBoxFlat = health_bar.get_theme_stylebox("fill").duplicate()
 	if health > 50:
