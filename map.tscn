@@ -14,7 +14,6 @@ texture_region_size = Vector2i(128, 128)
 3:0/0 = 0
 4:0/0 = 0
 5:0/0 = 0
-6:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
 1:1/0/custom_data_0 = true
@@ -22,57 +21,44 @@ texture_region_size = Vector2i(128, 128)
 3:1/0 = 0
 4:1/0 = 0
 5:1/0 = 0
-6:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
 4:2/0 = 0
 5:2/0 = 0
-6:2/0 = 0
 0:3/0 = 0
 1:3/0 = 0
 2:3/0 = 0
 3:3/0 = 0
 4:3/0 = 0
 5:3/0 = 0
-6:3/0 = 0
 0:4/0 = 0
 1:4/0 = 0
 2:4/0 = 0
 3:4/0 = 0
 4:4/0 = 0
 5:4/0 = 0
-6:4/0 = 0
 0:5/0 = 0
 1:5/0 = 0
 2:5/0 = 0
 3:5/0 = 0
 4:5/0 = 0
 5:5/0 = 0
-6:5/0 = 0
 0:6/0 = 0
 1:6/0 = 0
 2:6/0 = 0
 3:6/0 = 0
 4:6/0 = 0
 5:6/0 = 0
-6:6/0 = 0
-0:7/0 = 0
-1:7/0 = 0
-2:7/0 = 0
-3:7/0 = 0
-4:7/0 = 0
-5:7/0 = 0
-6:7/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_urblq"]
+[sub_resource type="TileSet" id="TileSet_e0an3"]
 tile_size = Vector2i(128, 128)
 custom_data_layer_0/name = "placable"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_p5pve")
 
-[sub_resource type="Curve2D" id="Curve2D_e0an3"]
+[sub_resource type="Curve2D" id="Curve2D_p5pve"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 64, 64, 0, 0, 0, 0, 960, 64, 0, 0, 0, 0, 960, 576, 0, 0, 0, 0, 64, 576, 0, 0, 0, 0, 64, 64)
 }
@@ -84,13 +70,11 @@ mob_scene = ExtResource("2_p5pve")
 tower_scene = ExtResource("3_p5pve")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
-position = Vector2(0, 255)
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAIAAAABAAAAAAAEAAIAAAACAAAAAAAEAAIAAAADAAAAAAAEAAIAAAAEAAAAAAAEAAIAAAAFAAAAAAAEAAIAAAAGAAAAAAAEAAIAAAAHAAAAAAAEAAIAAAAHAAEAAAAEAAIAAAAHAAIAAAAEAAIAAAAHAAMAAAAEAAIAAAAAAAMAAAAEAAIAAAAAAAIAAAAEAAIAAAAAAAEAAAAEAAIAAAAAAAQAAAAEAAIAAAABAAQAAAAEAAIAAAACAAQAAAAEAAIAAAADAAQAAAAEAAIAAAAEAAQAAAAEAAIAAAAFAAQAAAAEAAIAAAAGAAQAAAAEAAIAAAAHAAQAAAAEAAIAAAAGAAMAAAABAAEAAAAFAAMAAAABAAEAAAAEAAMAAAABAAEAAAADAAMAAAABAAEAAAACAAMAAAABAAEAAAABAAMAAAABAAEAAAABAAIAAAABAAEAAAACAAIAAAABAAEAAAADAAIAAAABAAEAAAAEAAIAAAABAAEAAAAFAAIAAAABAAEAAAAGAAIAAAABAAEAAAAGAAEAAAABAAEAAAAFAAEAAAABAAEAAAAEAAEAAAABAAEAAAADAAEAAAABAAEAAAACAAEAAAABAAEAAAABAAEAAAABAAEAAAA=")
-tile_set = SubResource("TileSet_urblq")
+tile_map_data = PackedByteArray("AAAAAAEAAAAEAAIAAAABAAEAAAABAAEAAAACAAEAAAABAAEAAAADAAEAAAABAAEAAAAEAAEAAAABAAEAAAAFAAEAAAABAAEAAAAGAAEAAAABAAEAAAAHAAEAAAAEAAIAAAAAAAIAAAAEAAIAAAAAAAMAAAAEAAIAAAAAAAQAAAAEAAIAAAABAAQAAAAEAAIAAAACAAQAAAAEAAIAAAADAAQAAAAEAAIAAAAEAAQAAAAEAAIAAAAFAAQAAAAEAAIAAAAGAAQAAAAEAAIAAAAHAAQAAAAEAAIAAAAHAAMAAAAEAAIAAAAHAAIAAAAEAAIAAAABAAIAAAABAAEAAAABAAMAAAABAAEAAAACAAMAAAABAAEAAAADAAMAAAABAAEAAAAEAAMAAAABAAEAAAAFAAMAAAABAAEAAAAGAAMAAAABAAEAAAAGAAIAAAABAAEAAAAFAAIAAAABAAEAAAAEAAIAAAABAAEAAAADAAIAAAABAAEAAAACAAIAAAABAAEAAAAAAAAAAAAEAAIAAAABAAAAAAAEAAIAAAACAAAAAAAEAAIAAAADAAAAAAAEAAIAAAAEAAAAAAAEAAIAAAAFAAAAAAAEAAIAAAAGAAAAAAAEAAIAAAAHAAAAAAAEAAIAAAA=")
+tile_set = SubResource("TileSet_e0an3")
 
 [node name="MobPath" type="Path2D" parent="."]
-position = Vector2(0, 256)
-curve = SubResource("Curve2D_e0an3")
+curve = SubResource("Curve2D_p5pve")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -99,107 +83,94 @@ autostart = true
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 8.0
-offset_top = 920.0
-offset_right = 1013.0
-offset_bottom = 1391.0
+offset_right = 1024.0
+offset_bottom = 768.0
+mouse_filter = 1
 
-[node name="Resource" type="VBoxContainer" parent="UI"]
-layout_mode = 0
-offset_right = 564.0
-offset_bottom = 432.0
-theme_override_constants/separation = 20
-
-[node name="Gold" type="Label" parent="UI/Resource"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Gold: 0"
-
-[node name="KillCount" type="Label" parent="UI/Resource"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Kill: 0"
-
-[node name="Stats" type="Label" parent="UI/Resource"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Stats: 
-Attack Speed:
-Attack Damage: "
-autowrap_mode = 2
-
-[node name="Ability" type="Label" parent="UI/Resource"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Ability:
-Cooldown:
-Description:"
-autowrap_mode = 2
-
-[node name="Buy" type="GridContainer" parent="UI"]
+[node name="GameState" type="HBoxContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 57.5
-offset_right = 515.5
-offset_bottom = 100.0
+offset_left = -448.0
+offset_right = 445.0
+offset_bottom = 45.0
 grow_horizontal = 2
-theme_override_constants/v_separation = 20
-columns = 3
+theme_override_constants/separation = 250
 
-[node name="DecAtkRateLabel" type="Label" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 40)
+[node name="WaveCount" type="Label" parent="UI/GameState"]
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_font_sizes/font_size = 16
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Wave: 0"
+
+[node name="MobCount" type="Label" parent="UI/GameState"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Enemies: 0"
+
+[node name="Gold" type="Label" parent="UI/GameState"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Gold: 0"
+
+[node name="IncAtkRate" type="Button" parent="UI"]
+custom_minimum_size = Vector2(200, 50)
+offset_left = 600.0
+offset_top = 648.0
+offset_right = 800.0
+offset_bottom = 702.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "Decrease Attack Rate by 10%"
-horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="IncAtkDmgLabel" type="Label" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 40)
+[node name="IncAtkDmg" type="Button" parent="UI"]
+custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 16
+offset_left = 808.0
+offset_top = 648.0
+offset_right = 1008.0
+offset_bottom = 702.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
 text = "Increast Attack Damage by 10%"
-horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DecAbilityCDLabel" type="Label" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 40)
+[node name="Ability" type="Label" parent="UI"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 16
-text = "Decreae Ability Cooldown by 10%"
-horizontal_alignment = 1
-vertical_alignment = 1
+offset_left = 16.0
+offset_top = 640.0
+offset_right = 316.0
+offset_bottom = 668.0
+theme_override_font_sizes/font_size = 20
+text = "E-Rank Ability"
 autowrap_mode = 2
 
-[node name="IncAtkRate" type="Button" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 0)
+[node name="AttackRate" type="Label" parent="UI"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 8
-text = "Buy: 50 Gold"
+offset_left = 16.0
+offset_top = 664.0
+offset_right = 216.0
+offset_bottom = 692.0
+theme_override_font_sizes/font_size = 20
+text = "Attack Speed:"
 autowrap_mode = 2
 
-[node name="IncAtkDmg" type="Button" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 0)
+[node name="AttackDamage" type="Label" parent="UI"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 8
-text = "Buy: 50 Gold"
-autowrap_mode = 2
-
-[node name="DecAbilityCD" type="Button" parent="UI/Buy"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Buy: 50 Gold"
+offset_left = 16.0
+offset_top = 688.0
+offset_right = 272.0
+offset_bottom = 716.0
+theme_override_font_sizes/font_size = 20
+text = "Attack Damage: "
 autowrap_mode = 2
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
-[connection signal="pressed" from="UI/Buy/IncAtkRate" to="." method="_on_dec_atk_rate_pressed"]
-[connection signal="pressed" from="UI/Buy/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]
-[connection signal="pressed" from="UI/Buy/DecAbilityCD" to="." method="_on_dec_ability_cd_pressed"]
+[connection signal="pressed" from="UI/IncAtkRate" to="." method="_on_dec_atk_rate_pressed"]
+[connection signal="pressed" from="UI/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]

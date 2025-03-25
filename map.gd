@@ -4,25 +4,23 @@ extends Node2D
 @onready var ground_tilemap = $TileMapLayer
 @export var tower_scene: PackedScene
 
-@onready var gold_label = $UI/Resource/Gold
-@onready var ability_label = $UI/Resource/Ability
-@onready var stats_label = $UI/Resource/Stats
-@onready var kill_count_label = $UI/Resource/KillCount
+@onready var gold_label = $UI/GameState/Gold
+@onready var ability_label = $UI/Ability
+@onready var attack_rate_label = $UI/AttackRate
+@onready var attack_damage_label = $UI/AttackDamage
 
 var towers = []
-var gold: int = 5000
+var gold: int = 50
 var attack_rate: float = 1
 var attack_damage: float = 10
 var ability_cooldown_in_seconds: float = 10
-var kill_count: int = 0
 
 func _ready():
 	update_ui()
 
 func _on_mob_died():
 	gold += 10
-	kill_count += 1
-	update_ui()
+	update_ui() 
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -66,9 +64,9 @@ func _on_spawn_timer_timeout():
 
 func update_ui():
 	gold_label.text = "Gold: %d" % gold
-	ability_label.text = "E-Rank Ability: Rapid Fire\nCooldown: %.2fs\nDescription: double attack speed in 5 seconds" % ability_cooldown_in_seconds
-	stats_label.text = "Stats: Gun Tower\nAttack Rate: %.2f\nAttack Damage: %.2f" % [attack_rate, attack_damage]
-	kill_count_label.text = "Kill: %d" % kill_count
+	ability_label.text = "E-Rank Ability: Rapid Fire"
+	attack_rate_label.text = "Attack Rate: %.2f" % attack_rate
+	attack_damage_label.text = "Attack Damage: %.2f" % attack_damage
 
 func update_tower_stats():
 	for tower in towers:
