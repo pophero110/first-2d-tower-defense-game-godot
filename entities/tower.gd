@@ -16,6 +16,7 @@ var ability: Node2D = null
 # Draw the attack range as a red circle
 func _draw():
 	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
+	detectorCollisionCircle.shape.radius = attack_range
 
 # Called when the node enters the scene tree for the first time
 func _ready():
@@ -30,8 +31,6 @@ func _ready():
 	ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
 	ability.tower = self
 	add_child(ability)
-	
-	detectorCollisionCircle.shape.radius = attack_range
 	
 	ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
 	ability_cooldown_progress_bar.max_value = ability_cooldown_in_seconds

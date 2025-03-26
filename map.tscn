@@ -114,63 +114,94 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Gold: 0"
 
-[node name="IncAtkRate" type="Button" parent="UI"]
-custom_minimum_size = Vector2(200, 50)
-offset_left = 600.0
+[node name="Ability" type="Label" parent="UI"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+offset_left = 16.0
 offset_top = 648.0
-offset_right = 800.0
-offset_bottom = 702.0
+offset_right = 316.0
+offset_bottom = 736.0
+theme_override_font_sizes/font_size = 32
+text = "E-Rank Ability"
+autowrap_mode = 2
+
+[node name="IncAtkSpeed" type="Button" parent="UI"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 568.0
+offset_top = 680.0
+offset_right = 768.0
+offset_bottom = 734.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-text = "Decrease Attack Rate by 10%"
+text = "Upgrade"
 autowrap_mode = 2
 
 [node name="IncAtkDmg" type="Button" parent="UI"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-offset_left = 808.0
-offset_top = 648.0
-offset_right = 1008.0
-offset_bottom = 702.0
+offset_left = 800.0
+offset_top = 680.0
+offset_right = 1000.0
+offset_bottom = 734.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-text = "Increast Attack Damage by 10%"
+text = "Upgrade"
 autowrap_mode = 2
 
-[node name="Ability" type="Label" parent="UI"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-offset_left = 16.0
-offset_top = 640.0
-offset_right = 316.0
-offset_bottom = 668.0
-theme_override_font_sizes/font_size = 20
-text = "E-Rank Ability"
+[node name="IncAtkRange" type="Button" parent="UI"]
+custom_minimum_size = Vector2(200, 50)
+offset_left = 336.0
+offset_top = 680.0
+offset_right = 536.0
+offset_bottom = 734.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Upgrade"
 autowrap_mode = 2
 
 [node name="AttackRate" type="Label" parent="UI"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-offset_left = 16.0
-offset_top = 664.0
-offset_right = 216.0
-offset_bottom = 692.0
+offset_left = 568.0
+offset_top = 648.0
+offset_right = 768.0
+offset_bottom = 676.0
 theme_override_font_sizes/font_size = 20
 text = "Attack Speed:"
 autowrap_mode = 2
+clip_text = true
 
 [node name="AttackDamage" type="Label" parent="UI"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-offset_left = 16.0
-offset_top = 688.0
-offset_right = 272.0
-offset_bottom = 716.0
+offset_left = 800.0
+offset_top = 648.0
+offset_right = 1016.0
+offset_bottom = 676.0
 theme_override_font_sizes/font_size = 20
 text = "Attack Damage: "
 autowrap_mode = 2
+clip_text = true
+
+[node name="AttackRange" type="Label" parent="UI"]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 344.0
+offset_top = 648.0
+offset_right = 560.0
+offset_bottom = 676.0
+theme_override_font_sizes/font_size = 20
+text = "Attack Range:"
+autowrap_mode = 2
+clip_text = true
+
+[node name="UpgradeConfirmDialog" type="ConfirmationDialog" parent="UI"]
+
+[node name="ErrorDialog" type="AcceptDialog" parent="UI"]
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
-[connection signal="pressed" from="UI/IncAtkRate" to="." method="_on_dec_atk_rate_pressed"]
+[connection signal="pressed" from="UI/IncAtkSpeed" to="." method="_on_dec_atk_rate_pressed"]
 [connection signal="pressed" from="UI/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]
+[connection signal="pressed" from="UI/IncAtkRange" to="." method="_on_inc_atk_range_pressed"]
+[connection signal="confirmed" from="UI/UpgradeConfirmDialog" to="." method="_on_upgrade_confirm_dialog_confirmed"]

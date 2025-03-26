@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-@export var health = 100
+@export var health = 30
+@export var max_health = 30
 @onready var health_bar: ProgressBar = $HealthBar
 signal health_changed(newHealth: int)
 signal died
@@ -34,12 +35,23 @@ func _on_die_animation_finished():
 	get_parent().queue_free() # Remove mob and also PathFollow2D
 	
 func update_health_bar_color():
+	# Ensure health_bar is valid
+	if !health_bar:
+		return
+	
+	# Calculate health percentage
+	var health_percentage = float(health) / max_health * 100
+	
+	# Duplicate the existing fill style
 	var fill_style: StyleBoxFlat = health_bar.get_theme_stylebox("fill").duplicate()
-	if health > 50:
+	
+	# Change color based on health percentage
+	if health_percentage > 50:
 		fill_style.bg_color = Color(0, 1, 0)  # Green
-	elif health > 20:
+	elif health_percentage > 20:
 		fill_style.bg_color = Color(1, 1, 0)  # Yellow
 	else:
 		fill_style.bg_color = Color(1, 0, 0)  # Red
 	
+	# Apply the new style to the health bar
 	health_bar.add_theme_stylebox_override("fill", fill_style)
