@@ -5,6 +5,10 @@ extends Node2D
 
 @onready var ground_tilemap = $TileMapLayer
 @onready var gold_label = $UI/GameState/Gold
+@onready var health_label = $UI/GameState/Health
+@onready var wave_count_label = $UI/GameState/WaveCount
+@onready var enemy_count_label = $UI/GameState/EnemyCount
+
 @onready var ability_label = $UI/Ability
 @onready var attack_rate_label = $UI/AttackRate
 @onready var attack_damage_label = $UI/AttackDamage
@@ -16,20 +20,39 @@ extends Node2D
 @onready var error_dialog = $UI/ErrorDialog  # Reference the error popup
 
 var towers = []
-var gold: int = 5000
+var gold: int = 50
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
 var upgrade_type = ""
 
-var waveCount: int = 1
-var enemyTotalCount: int = 10
-var enemyCount: int = 10
+var health: int = 15
+@onready var menu_ui = $Menu
 @onready var spawnTimer = $SpawnTimer
+@onready var waveTimer = $WaveTimer
+var wave_count: int = 1
+var enemy_count: int = 10
+var isGameStarted: bool = false
+signal game_over
+
+var mob_max_health: int = 30
 
 func _ready():
 	ability_label.text = "E-Rank Ability\n\"Rapid Fire\""
 	update_ui()
+
+func _process(delta):
+	if (!isGameStarted): return
+	if (!waveTimer.is_stopped()):
+		wave_count_label.text = "Wave: %d (%d)" % [wave_count, waveTimer.time_left] 
+	var mob_follow_paths = get_tree().get_nodes_in_group("mob_follow_path")
+	for mob_follow_path: PathFollow2D in mob_follow_paths:
+		if (mob_follow_path.progress_ratio >= 1.0):
+			mob_follow_path.queue_free()
+			health -= 1
+			update_ui()
+	if (health <= 0):
+		game_over.emit()
 
 func _on_mob_died():
 	gold += 10
@@ -66,20 +89,32 @@ func place_tower(tile_pos: Vector2i):
 		update_tower_stats()
 		
 func _on_spawn_timer_timeout():
-	var path_follow_2d = PathFollow2D.new()
-	var mob = mob_scene.instantiate()
-	mob.health = 30
-	mob.max_health = 30
-	
-	mob.died.connect(_on_mob_died)
-	
-	path_follow_2d.set_script(load("res://path_follow_2d.gd"))
-	
-	$MobPath.add_child(path_follow_2d)
-	path_follow_2d.add_child(mob)
+	if (enemy_count == 0):
+		$WaveTimer.start()
+		$SpawnTimer.stop()
+	else:
+		enemy_count -= 1
+		update_ui()
+		var path_follow_2d = PathFollow2D.new()
+		var mob = mob_scene.instantiate()
+		mob.health = mob_max_health
+		mob.max_health = mob_max_health
+		
+		mob.died.connect(_on_mob_died)
+		
+		path_follow_2d.set_script(load("res://path_follow_2d.gd"))
+		path_follow_2d.add_to_group("mob_follow_path")
+		path_follow_2d.loop = false
+		
+		$MobPath.add_child(path_follow_2d)
+		path_follow_2d.add_child(mob)
 
 func update_ui():
 	gold_label.text = "Gold: %d" % self.gold
+	health_label.text = "Health: %d" % self.health
+	enemy_count_label.text = "Enemey: %d" % self.enemy_count
+	wave_count_label.text = "Wave: %d" % self.wave_count
+	
 	attack_rate_label.text = "Attack Rate: %.2f" % self.attack_rate
 	attack_damage_label.text = "Attack Damage: %.2f" % self.attack_damage
 	attack_range_label.text = "Attack Range: %.2f" % self.attack_range
@@ -108,7 +143,7 @@ func _on_inc_atk_dmg_pressed():
 	var cost = calculate_cost(attack_damage, 50, 1.15)
 	if gold >= cost:
 		upgrade_type = "attack_damage"
-		upgrade_confirm_dialog.dialog_text = "Upgrade Attack Damage by 10% for %d Gold?" % [cost]
+		upgrade_confirm_dialog.dialog_text = "Increase Attack Damage by 10% for %d Gold?" % [cost]
 		upgrade_confirm_dialog.popup_centered()
 	else:
 		show_error("Not enough gold!")
@@ -117,7 +152,7 @@ func _on_dec_atk_rate_pressed():
 	var cost = calculate_cost(attack_rate, 50, 1.15)
 	if gold >= cost:
 		upgrade_type = "attack_rate"
-		upgrade_confirm_dialog.dialog_text = "Upgrade Attack Rate by 10%% for %d Gold?" % [cost]
+		upgrade_confirm_dialog.dialog_text = "Increase Attack Speed by 10%% for %d Gold?" % [cost]
 		upgrade_confirm_dialog.popup_centered()
 	else:
 		show_error("Not enough gold!")
@@ -126,7 +161,7 @@ func _on_inc_atk_range_pressed():
 	var cost = calculate_cost(attack_range, 50, 1.01)
 	if gold >= cost:
 		upgrade_type = "attack_range"
-		upgrade_confirm_dialog.dialog_text = "Upgrade Attack Range by 10%% for %d Gold?" % [cost]
+		upgrade_confirm_dialog.dialog_text = "Increase Attack Range by 10%% for %d Gold?" % [cost]
 		upgrade_confirm_dialog.popup_centered()
 	else:
 		show_error("Not enough gold!")
@@ -165,3 +200,30 @@ func show_error(message: String):
 # Scaling cost function based on current value
 func calculate_cost(stat_value: float, base_cost: int, growth_factor: float) -> int:
 	return int(base_cost * pow(growth_factor, stat_value))
+
+func _on_start_game_pressed():
+	isGameStarted = true
+	$Menu.hide()
+	$SpawnTimer.start()
+
+func _on_game_over():
+	isGameStarted = false
+	get_tree().call_group("mob_follow_path", "queue_free")
+	get_tree().call_group("tower", "queue_free")
+	$Menu.show()
+	$SpawnTimer.stop()
+
+func start_next_wave():
+	wave_count += 1  # Increase wave count
+	enemy_count = wave_count * 2 + enemy_count  # Increase enemies linearly
+	mob_max_health += 10
+
+	# Scale spawn interval: Decrease spawn time slightly each wave for difficulty
+	$SpawnTimer.wait_time = max($SpawnTimer.wait_time * 0.9, 1)
+	$SpawnTimer.start()
+	$WaveTimer.start()
+
+	print("Wave:", wave_count, " | Enemies:", enemy_count, " | Spawn Interval:", $SpawnTimer.wait_time)
+
+func _on_wave_timer_timeout():
+	start_next_wave()

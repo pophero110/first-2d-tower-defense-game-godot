@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://c4pkhcnyesfot"]
+[gd_scene load_steps=9 format=4 uid="uid://c4pkhcnyesfot"]
 
 [ext_resource type="Script" uid="uid://bwhdx7oqdah0b" path="res://map.gd" id="1_p5pve"]
 [ext_resource type="Texture2D" uid="uid://ce18klbbdd1cq" path="res://assets/tiles/field_tilesheet.png" id="1_wijl4"]
@@ -64,6 +64,9 @@ _data = {
 }
 point_count = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5pve"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_p5pve")
 mob_scene = ExtResource("2_p5pve")
@@ -76,9 +79,16 @@ tile_set = SubResource("TileSet_e0an3")
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_p5pve")
 
+[node name="TestPathFollow2D" type="PathFollow2D" parent="MobPath"]
+position = Vector2(64, 64)
+rotation = -1.5708
+progress = 2816.0
+
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-autostart = true
+
+[node name="WaveTimer" type="Timer" parent="."]
+wait_time = 20.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -96,18 +106,23 @@ offset_left = -448.0
 offset_right = 445.0
 offset_bottom = 45.0
 grow_horizontal = 2
-theme_override_constants/separation = 250
+theme_override_constants/separation = 110
 
 [node name="WaveCount" type="Label" parent="UI/GameState"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
-text = "Wave: 0"
+text = "Wave: 1 (0)"
 
-[node name="MobCount" type="Label" parent="UI/GameState"]
+[node name="EnemyCount" type="Label" parent="UI/GameState"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Enemies: 0"
+text = "Enemey: 0"
+
+[node name="Health" type="Label" parent="UI/GameState"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Health: 15"
 
 [node name="Gold" type="Label" parent="UI/GameState"]
 layout_mode = 2
@@ -200,8 +215,34 @@ clip_text = true
 
 [node name="ErrorDialog" type="AcceptDialog" parent="UI"]
 
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 768.0
+
+[node name="StartGame" type="Button" parent="Menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -76.0
+offset_right = 225.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxFlat_p5pve")
+text = "Start Game"
+
+[connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]
 [connection signal="pressed" from="UI/IncAtkSpeed" to="." method="_on_dec_atk_rate_pressed"]
 [connection signal="pressed" from="UI/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]
 [connection signal="pressed" from="UI/IncAtkRange" to="." method="_on_inc_atk_range_pressed"]
 [connection signal="confirmed" from="UI/UpgradeConfirmDialog" to="." method="_on_upgrade_confirm_dialog_confirmed"]
+[connection signal="pressed" from="Menu/StartGame" to="." method="_on_start_game_pressed"]
