@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=4 uid="uid://c4pkhcnyesfot"]
+[gd_scene load_steps=9 format=4 uid="uid://c4pkhcnyesfot"]
 
 [ext_resource type="Script" uid="uid://bwhdx7oqdah0b" path="res://map.gd" id="1_p5pve"]
 [ext_resource type="Texture2D" uid="uid://ce18klbbdd1cq" path="res://assets/tiles/field_tilesheet.png" id="1_wijl4"]
 [ext_resource type="PackedScene" uid="uid://cmkwopufoodck" path="res://mob.tscn" id="2_p5pve"]
 [ext_resource type="PackedScene" uid="uid://cmbdbnu87us2l" path="res://entities/tower.tscn" id="3_p5pve"]
-[ext_resource type="Script" uid="uid://d36sjpqodgjki" path="res://ground_layer.gd" id="5_urblq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5pve"]
 texture = ExtResource("1_wijl4")
@@ -76,7 +75,6 @@ tower_scene = ExtResource("3_p5pve")
 [node name="GroundLayer" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAAAAAEAAAAEAAIAAAABAAEAAAABAAEAAAACAAEAAAABAAEAAAADAAEAAAABAAEAAAAEAAEAAAABAAEAAAAFAAEAAAABAAEAAAAGAAEAAAABAAEAAAAHAAEAAAAEAAIAAAAAAAIAAAAEAAIAAAAAAAMAAAAEAAIAAAAAAAQAAAAEAAIAAAABAAQAAAAEAAIAAAACAAQAAAAEAAIAAAADAAQAAAAEAAIAAAAEAAQAAAAEAAIAAAAFAAQAAAAEAAIAAAAGAAQAAAAEAAIAAAAHAAQAAAAEAAIAAAAHAAMAAAAEAAIAAAAHAAIAAAAEAAIAAAABAAIAAAABAAEAAAABAAMAAAABAAEAAAACAAMAAAABAAEAAAADAAMAAAABAAEAAAAEAAMAAAABAAEAAAAFAAMAAAABAAEAAAAGAAMAAAABAAEAAAAGAAIAAAABAAEAAAAFAAIAAAABAAEAAAAEAAIAAAABAAEAAAADAAIAAAABAAEAAAACAAIAAAABAAEAAAAAAAAAAAAEAAIAAAABAAAAAAAEAAIAAAACAAAAAAAEAAIAAAADAAAAAAAEAAIAAAAEAAAAAAAEAAIAAAAFAAAAAAAEAAIAAAAGAAAAAAAEAAIAAAAHAAAAAAAEAAIAAAA=")
 tile_set = SubResource("TileSet_e0an3")
-script = ExtResource("5_urblq")
 
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_p5pve")

@@ -3,7 +3,7 @@ extends Node2D
 @export var mob_scene: PackedScene
 @export var tower_scene: PackedScene
 
-@onready var ground_tilemap = $TileMapLayer
+@onready var ground_tilemap = $GroundLayer
 @onready var gold_label = $UI/GameState/Gold
 @onready var health_label = $UI/GameState/Health
 @onready var wave_count_label = $UI/GameState/WaveCount
@@ -69,6 +69,7 @@ func _unhandled_input(event):
 		var tileData = ground_tilemap.get_cell_tile_data(clicked_cell)
 		if (tileData == null): return
 		if (!is_tower_at_position(tile_pos) && tileData.get_custom_data("placable") && gold >= 50):
+			
 			place_tower(tile_pos)
 			gold -= 50
 			update_ui()
