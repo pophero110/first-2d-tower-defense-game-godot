@@ -43,6 +43,7 @@ func _ready():
 
 func _process(delta):
 	if (!isGameStarted): return
+		
 	if (!waveTimer.is_stopped()):
 		wave_count_label.text = "Wave: %d (%d)" % [wave_count, waveTimer.time_left] 
 	var mob_follow_paths = get_tree().get_nodes_in_group("mob_follow_path")
