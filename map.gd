@@ -10,10 +10,10 @@ extends Node2D
 @onready var enemy_count_label = $UI/GameState/EnemyCount
 
 @onready var ability_label = $UI/Ability
+@onready var ability_shout_out_label = $UI/AbilityShoutOut
 @onready var attack_rate_label = $UI/AttackRate
 @onready var attack_damage_label = $UI/AttackDamage
 @onready var attack_range_label = $UI/AttackRange
-@onready var tower_ability = preload("res://dual_fire.tscn").instantiate()
 @onready var inc_attack_speed_button = $UI/IncAtkSpeed
 @onready var inc_attack_damage_button = $UI/IncAtkDmg
 @onready var inc_attack_range_button = $UI/IncAtkRange
@@ -25,6 +25,7 @@ var gold: int = 5000
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
+var tower_ability = null
 var upgrade_type = ""
 
 var health: int = 15
@@ -39,7 +40,6 @@ signal game_over
 var mob_max_health: int = 30
 
 func _ready():
-	ability_label.text = "E-Rank Ability\n" + tower_ability.ability_name
 	update_ui()
 
 func _process(delta):
@@ -91,6 +91,23 @@ func place_tower(tile_pos: Vector2i):
 		tower.global_position = world_pos
 		towers.append(tower)
 		update_tower_stats()
+		
+func get_random_ability():
+	var abilities = [
+		{"scene_name": "dual_fire", "rank": 20},
+		{"scene_name": "rapid_fire", "rank": 10},
+		{"scene_name": "ultimate_blast", "rank": 1}
+	]
+
+	# Create a weighted list based on rank
+	var weighted_list = []
+	for ability in abilities:
+		for i in range(ability["rank"]):  
+			weighted_list.append(ability["scene_name"])
+
+	# Randomly select from the weighted list
+	var selected_ability = weighted_list[randi() % weighted_list.size()]
+	return load("res://%s.tscn" % selected_ability).instantiate()
 		
 func _on_spawn_timer_timeout():
 	if (enemy_count == 0):
@@ -209,6 +226,14 @@ func _on_start_game_pressed():
 	isGameStarted = true
 	$Menu.hide()
 	$SpawnTimer.start()
+	tower_ability = get_random_ability()
+	ability_shout_out_label.text = "E-Rank Ability\n" + tower_ability.display_name
+	$UI/AnimationPlayer.play("ability_shout_out")
+	$UI/AnimationPlayer.animation_finished.connect(_on_ability_shout_out_animation_finished)
+
+func _on_ability_shout_out_animation_finished(animation_name):
+	print("123")
+	ability_label.text = "E-Rank Ability\n" + tower_ability.display_name
 
 func _on_game_over():
 	isGameStarted = false
