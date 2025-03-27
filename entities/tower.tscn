@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://cmbdbnu87us2l"]
 
 [ext_resource type="Script" uid="uid://ddwpsxohk3pxk" path="res://entities/tower.gd" id="1_20vcr"]
-[ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://projectile.tscn" id="2_erj2q"]
+[ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://entities/projectile.tscn" id="2_erj2q"]
 [ext_resource type="Texture2D" uid="uid://b7d1m8bbuowh1" path="res://assets/towers/cannon/tier1/gun_idle_00.png" id="3_1s3se"]
 [ext_resource type="Texture2D" uid="uid://cgpk1r7hkwip0" path="res://assets/towers/cannon/tier1/gun_shoot_00.png" id="4_4hh3e"]
 [ext_resource type="Texture2D" uid="uid://nvp35vhgkbws" path="res://assets/towers/cannon/tier1/gun_shoot_01.png" id="5_idgp8"]

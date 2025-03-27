@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bijwfmjkgdfsh" path="res://assets/enemies/infantry/tier1/move_06.png" id="7_yscv0"]
 [ext_resource type="Texture2D" uid="uid://bdlt5vb1br1sx" path="res://assets/enemies/infantry/tier1/move_07.png" id="8_eqsov"]
 [ext_resource type="Texture2D" uid="uid://cxsa66s42j8yb" path="res://assets/enemies/infantry/tier1/die_06.png" id="8_hpl8x"]
-[ext_resource type="Script" uid="uid://bhn64v63wojtn" path="res://mob.gd" id="9_ieysi"]
+[ext_resource type="Script" uid="uid://bhn64v63wojtn" path="res://entities/mob.gd" id="9_ieysi"]
 [ext_resource type="AudioStream" uid="uid://bsd77i4w24a2" path="res://assets/sounds/male-death-sound-128357.mp3" id="17_h0ign"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfurk"]

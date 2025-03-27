@@ -47,10 +47,10 @@ func _process(delta):
 		
 	if (!waveTimer.is_stopped()):
 		wave_count_label.text = "Wave: %d (%d)" % [wave_count, waveTimer.time_left] 
-	var mob_follow_paths = get_tree().get_nodes_in_group("mob_follow_path")
-	for mob_follow_path: PathFollow2D in mob_follow_paths:
-		if (mob_follow_path.progress_ratio >= 1.0):
-			mob_follow_path.queue_free()
+	var mob_path_follows = get_tree().get_nodes_in_group("mob_path_follow")
+	for mob_path_follow: PathFollow2D in mob_path_follows:
+		if (mob_path_follow.progress_ratio >= 1.0):
+			mob_path_follow.queue_free()
 			health -= 1
 			update_ui()
 	if (health <= 0):
@@ -107,7 +107,9 @@ func get_random_ability():
 
 	# Randomly select from the weighted list
 	var selected_ability = weighted_list[randi() % weighted_list.size()]
-	return load("res://%s.tscn" % selected_ability).instantiate()
+	var ability_scene_node = preload("res://entities/abilities/ability.tscn").instantiate()
+	ability_scene_node.set_script(load("res://entities/abilities/%s.gd" % selected_ability))
+	return ability_scene_node
 		
 func _on_spawn_timer_timeout():
 	if (enemy_count == 0):
@@ -123,8 +125,8 @@ func _on_spawn_timer_timeout():
 		
 		mob.died.connect(_on_mob_died)
 		
-		path_follow_2d.set_script(load("res://path_follow_2d.gd"))
-		path_follow_2d.add_to_group("mob_follow_path")
+		path_follow_2d.set_script(load("res://entities/mob_path_follow.gd"))
+		path_follow_2d.add_to_group("mob_path_follow")
 		path_follow_2d.loop = false
 		
 		$MobPath.add_child(path_follow_2d)
@@ -237,7 +239,7 @@ func _on_ability_shout_out_animation_finished(animation_name):
 
 func _on_game_over():
 	isGameStarted = false
-	get_tree().call_group("mob_follow_path", "queue_free")
+	get_tree().call_group("mob_path_follow", "queue_free")
 	get_tree().call_group("tower", "queue_free")
 	$Menu.show()
 	$SpawnTimer.stop()
