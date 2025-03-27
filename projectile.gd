@@ -32,3 +32,4 @@ func _process(delta):
 func hit_target():
 	target.take_damage(damage)
 	queue_free()
+	

@@ -4,6 +4,8 @@ extends Node2D
 @export var attack_rate: float = 1  # Attack rate in seconds
 @export var attack_range: float = 150  # Attack range in pixels
 @export var attack_damage: float = 10
+@export var number_of_projectile: int = 1
+@export var ability: Node = null
 @export var ability_cooldown_in_seconds: float = 10
 @onready var detectorCollisionCircle = $Detector/CollisionShape2D
 @onready var ability_cooldown_progress_bar = $AbilityCooldownProgressBar
@@ -11,7 +13,6 @@ extends Node2D
 var enemies = []  # List of enemies within the attack range3r
 var timer: Timer = null
 var target: Node2D = null
-var ability: Node2D = null
 
 # Draw the attack range as a red circle
 func _draw():
@@ -27,7 +28,6 @@ func _ready():
 	timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(timer)
 	
-	ability = preload("res://rapid_fire.tscn").instantiate()
 	ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
 	ability.tower = self
 	add_child(ability)
@@ -89,10 +89,16 @@ func play_shoot_animation():
 	$AnimatedSprite2D.play()
 
 func fire_projectile():
-	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
-	projectile._initialize(target, attack_damage)
-	get_parent().add_child(projectile)  # Add it to the scene
-	projectile.position = position  # Set the projectile's position to the tower's position
+	var spacing = 30  # Adjust this value to control the spacing between projectiles
+	for i in range(number_of_projectile):
+		var projectile = projectile_scene.instantiate()  # Create a new projectile instance
+		projectile._initialize(target, attack_damage)
+		get_parent().add_child(projectile)  # Add it to the scene
+		
+		# Offset each projectile's position to prevent overlapping
+		projectile.position = position + Vector2(i * spacing - (number_of_projectile - 1) * spacing / 2, 0)
+
+
 
 func _on_detector_body_entered(body):
 	enemies.append(body)

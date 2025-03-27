@@ -13,6 +13,7 @@ extends Node2D
 @onready var attack_rate_label = $UI/AttackRate
 @onready var attack_damage_label = $UI/AttackDamage
 @onready var attack_range_label = $UI/AttackRange
+@onready var tower_ability = preload("res://dual_fire.tscn").instantiate()
 @onready var inc_attack_speed_button = $UI/IncAtkSpeed
 @onready var inc_attack_damage_button = $UI/IncAtkDmg
 @onready var inc_attack_range_button = $UI/IncAtkRange
@@ -20,7 +21,7 @@ extends Node2D
 @onready var error_dialog = $UI/ErrorDialog  # Reference the error popup
 
 var towers = []
-var gold: int = 50
+var gold: int = 5000
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
@@ -38,7 +39,7 @@ signal game_over
 var mob_max_health: int = 30
 
 func _ready():
-	ability_label.text = "E-Rank Ability\n\"Rapid Fire\""
+	ability_label.text = "E-Rank Ability\n" + tower_ability.ability_name
 	update_ui()
 
 func _process(delta):
@@ -83,6 +84,7 @@ func is_tower_at_position(tile_pos: Vector2i) -> bool:
 	
 func place_tower(tile_pos: Vector2i):
 		var tower = tower_scene.instantiate()
+		tower.ability = tower_ability
 		add_child(tower)
 		# Position the tower at the center of the tile
 		var world_pos = ground_tilemap.map_to_local(tile_pos)

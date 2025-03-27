@@ -20,6 +20,9 @@ func _process(_delta):
 	health_bar.global_position = get_parent().global_position + Vector2(-25, -40)
 
 func take_damage(amount):
+	if health <= 0:
+		print("Mob is already dead")
+		return
 	health -= amount
 	health_bar.value = health
 	update_health_bar_color()

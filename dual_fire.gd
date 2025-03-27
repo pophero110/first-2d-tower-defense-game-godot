@@ -4,9 +4,8 @@ extends Node2D
 @export var duration_in_seconds: int = 5
 @export var rank: String = "E" # TODO: best practice to create enum variable in GDScript
 @export var tower: Node2D
-@export var ability_name = "Rapid Fire"
+@export var ability_name = "Dual Fire"
 var ability_cooldown_progress_bar: ProgressBar
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if (tower == null): print("no tower link to this ability")
@@ -22,7 +21,7 @@ func isInCooldown():
 	
 func deactiviate():
 	print(ability_name + " deactivated")
-	tower.attack_rate *= 2
+	tower.number_of_projectile = 1
 
 func activate(cooldown_in_seconds):
 	if ($CooldownTimer.is_stopped()):
@@ -30,7 +29,7 @@ func activate(cooldown_in_seconds):
 		self.cooldown_in_seconds = cooldown_in_seconds
 		$CooldownTimer.start(cooldown_in_seconds)
 		$DurationTimer.start(duration_in_seconds)
-		tower.attack_rate /= 2
+		tower.number_of_projectile = 2
 
 func _on_duration_timer_timeout():
 	deactiviate()

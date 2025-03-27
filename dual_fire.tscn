@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cj6in7p6vi52j"]
+[gd_scene load_steps=2 format=3 uid="uid://depmkejjxhpel"]
 
-[ext_resource type="Script" uid="uid://bvme46fr0es0y" path="res://rapid_fire.gd" id="2_kl1op"]
+[ext_resource type="Script" uid="uid://bptatjhjeufj7" path="res://dual_fire.gd" id="1_6g0na"]
 
-[node name="RapidFire" type="Node2D"]
-script = ExtResource("2_kl1op")
+[node name="DualFire" type="Node2D"]
+script = ExtResource("1_6g0na")
 
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
