@@ -42,7 +42,7 @@ var mob_max_health: int = 30
 func _ready():
 	update_ui()
 
-func _process(delta):
+func _process(_delta):
 	if (!isGameStarted): return
 		
 	if (!waveTimer.is_stopped()):
@@ -84,9 +84,10 @@ func is_tower_at_position(tile_pos: Vector2i) -> bool:
 	
 func place_tower(tile_pos: Vector2i):
 		var tower = tower_scene.instantiate()
-		tower.ability = tower_ability
+		var copied_tower_ability = tower_ability.duplicate()
+		tower.ability = copied_tower_ability
 		add_child(tower)
-		tower.add_child(tower_ability)
+		tower.add_child(copied_tower_ability)
 		# Position the tower at the center of the tile
 		var world_pos = ground_tilemap.map_to_local(tile_pos)
 		tower.global_position = world_pos
@@ -237,7 +238,7 @@ func _on_start_game_pressed():
 	$UI/AnimationPlayer.play("ability_shout_out")
 	$UI/AnimationPlayer.animation_finished.connect(_on_ability_shout_out_animation_finished)
 
-func _on_ability_shout_out_animation_finished(animation_name):
+func _on_ability_shout_out_animation_finished(_animation_name):
 	ability_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
 
 func _on_game_over():
@@ -246,14 +247,15 @@ func _on_game_over():
 	get_tree().call_group("tower", "queue_free")
 	$Menu.show()
 	$SpawnTimer.stop()
+	$WaveTimer.stop()
 
 func start_next_wave():
 	wave_count += 1  # Increase wave count
-	enemy_count = wave_count * 2 + enemy_count  # Increase enemies linearly
+	enemy_count = wave_count * 2 + 10  # Increase enemies linearly
 	mob_max_health += 10
 
 	# Scale spawn interval: Decrease spawn time slightly each wave for difficulty
-	$SpawnTimer.wait_time = max($SpawnTimer.wait_time * 0.9, 1)
+	$SpawnTimer.wait_time = max($SpawnTimer.wait_time * 0.9, 0.5)
 	$SpawnTimer.start()
 	$WaveTimer.start()
 

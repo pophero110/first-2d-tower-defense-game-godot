@@ -6,7 +6,7 @@ extends Area2D
 func _ready():
 	$AnimatedSprite2D.play("explosion")
 	
-func _process(delta):
+func _process(_delta):
 	if not hit:
 		apply_damage()
 

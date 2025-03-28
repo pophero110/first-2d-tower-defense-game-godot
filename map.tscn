@@ -142,10 +142,10 @@ tile_set = SubResource("TileSet_e0an3")
 curve = SubResource("Curve2D_p5pve")
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 1.5
 
 [node name="WaveTimer" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 15.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
