@@ -21,14 +21,14 @@ extends Node2D
 @onready var error_dialog = $UI/ErrorDialog  # Reference the error popup
 
 var towers = []
-var gold: int = 5000
+var gold: int = 50
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
 var tower_ability = null
 var upgrade_type = ""
 
-var health: int = 15
+var player_health: int = 15
 @onready var menu_ui = $Menu
 @onready var spawnTimer = $SpawnTimer
 @onready var waveTimer = $WaveTimer
@@ -37,7 +37,7 @@ var enemy_count: int = 10
 var isGameStarted: bool = false
 signal game_over
 
-var mob_max_health: int = 30
+var mob_max_health: int = 10000
 
 func _ready():
 	update_ui()
@@ -51,9 +51,9 @@ func _process(_delta):
 	for mob_path_follow: PathFollow2D in mob_path_follows:
 		if (mob_path_follow.progress_ratio >= 1.0):
 			mob_path_follow.queue_free()
-			health -= 1
+			player_health -= 1
 			update_ui()
-	if (health <= 0):
+	if (player_health <= 0):
 		game_over.emit()
 
 func _on_mob_died():
@@ -136,7 +136,7 @@ func _on_spawn_timer_timeout():
 
 func update_ui():
 	gold_label.text = "Gold: %d" % self.gold
-	health_label.text = "Health: %d" % self.health
+	health_label.text = "Health: %d" % self.player_health
 	enemy_count_label.text = "Enemey: %d" % self.enemy_count
 	wave_count_label.text = "Wave: %d" % self.wave_count
 	
@@ -233,18 +233,20 @@ func _on_start_game_pressed():
 	isGameStarted = true
 	$Menu.hide()
 	$SpawnTimer.start()
+	$WaveTimer.start()
 	tower_ability = get_random_ability()
 	ability_shout_out_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
-	$UI/AnimationPlayer.play("ability_shout_out")
-	$UI/AnimationPlayer.animation_finished.connect(_on_ability_shout_out_animation_finished)
-
-func _on_ability_shout_out_animation_finished(_animation_name):
-	ability_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
-
+	$UI/GameStartAnimation.play("ability_shout_out")
+	
 func _on_game_over():
 	isGameStarted = false
 	get_tree().call_group("mob_path_follow", "queue_free")
 	get_tree().call_group("tower", "queue_free")
+	towers = []
+	wave_count = 1
+	enemy_count = 10
+	gold = 50
+	player_health = 15
 	$Menu.show()
 	$SpawnTimer.stop()
 	$WaveTimer.stop()
@@ -255,7 +257,7 @@ func start_next_wave():
 	mob_max_health += 10
 
 	# Scale spawn interval: Decrease spawn time slightly each wave for difficulty
-	$SpawnTimer.wait_time = max($SpawnTimer.wait_time * 0.9, 0.5)
+	$SpawnTimer.wait_time = max($SpawnTimer.wait_time * 0.9, 0.1)
 	$SpawnTimer.start()
 	$WaveTimer.start()
 
@@ -263,3 +265,6 @@ func start_next_wave():
 
 func _on_wave_timer_timeout():
 	start_next_wave()
+
+func _on_game_start_animation_animation_finished():
+	ability_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]

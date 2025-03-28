@@ -12,7 +12,6 @@ func _process(_delta):
 
 func apply_damage():
 	var bodies = get_overlapping_bodies()
-	print(bodies)
 	for body in bodies:
 		if body.has_method("take_damage"):
 			body.take_damage(damage)

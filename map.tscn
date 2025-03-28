@@ -154,7 +154,7 @@ offset_right = 1024.0
 offset_bottom = 768.0
 mouse_filter = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI"]
+[node name="GameStartAnimation" type="AnimationPlayer" parent="UI"]
 root_node = NodePath("../AbilityShoutOut")
 libraries = {
 &"": SubResource("AnimationLibrary_urblq")
@@ -330,6 +330,7 @@ text = "Start Game"
 [connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]
+[connection signal="animation_finished" from="UI/GameStartAnimation" to="." method="_on_game_start_animation_animation_finished"]
 [connection signal="pressed" from="UI/IncAtkSpeed" to="." method="_on_dec_atk_rate_pressed"]
 [connection signal="pressed" from="UI/IncAtkDmg" to="." method="_on_inc_atk_dmg_pressed"]
 [connection signal="pressed" from="UI/IncAtkRange" to="." method="_on_inc_atk_range_pressed"]
