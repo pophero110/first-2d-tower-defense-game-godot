@@ -91,6 +91,7 @@ animation = &"move"
 shape = SubResource("CircleShape2D_ieysi")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 1
 offset_left = -24.0
 offset_top = -40.0
 offset_right = 24.0
