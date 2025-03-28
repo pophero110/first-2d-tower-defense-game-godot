@@ -141,11 +141,6 @@ tile_set = SubResource("TileSet_e0an3")
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_p5pve")
 
-[node name="TestPathFollow2D" type="PathFollow2D" parent="MobPath"]
-position = Vector2(64, 64.0002)
-rotation = -1.5708
-progress = 2816.0
-
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
 
@@ -211,6 +206,8 @@ offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AbilityShoutOut" type="Label" parent="UI"]
 layout_mode = 1

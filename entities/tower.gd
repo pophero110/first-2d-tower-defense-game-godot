@@ -4,6 +4,7 @@ extends Node2D
 @export var attack_rate: float = 1  # Attack rate in seconds
 @export var attack_range: float = 150  # Attack range in pixels
 @export var attack_damage: float = 10
+@export var projectile_type: String =  "shell"
 @export var number_of_projectile: int = 1
 @export var ability: Node = null
 @export var ability_cooldown_in_seconds: float = 10
@@ -30,8 +31,6 @@ func _ready():
 	
 	ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
 	ability.tower = self
-	add_child(ability)
-	
 	ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
 	ability_cooldown_progress_bar.max_value = ability_cooldown_in_seconds
 
@@ -92,13 +91,11 @@ func fire_projectile():
 	var spacing = 30  # Adjust this value to control the spacing between projectiles
 	for i in range(number_of_projectile):
 		var projectile = projectile_scene.instantiate()  # Create a new projectile instance
-		projectile._initialize(target, attack_damage)
+		projectile._initialize(target, attack_damage, projectile_type)
 		get_parent().add_child(projectile)  # Add it to the scene
 		
 		# Offset each projectile's position to prevent overlapping
 		projectile.position = position + Vector2(i * spacing - (number_of_projectile - 1) * spacing / 2, 0)
-
-
 
 func _on_detector_body_entered(body):
 	enemies.append(body)

@@ -75,7 +75,7 @@ show_percentage = false
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_ob3u2")
-animation = &"idle"
+animation = &"shoot"
 
 [node name="Detector" type="Area2D" parent="."]
 

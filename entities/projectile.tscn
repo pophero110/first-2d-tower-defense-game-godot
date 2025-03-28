@@ -1,32 +1,32 @@
 [gd_scene load_steps=11 format=3 uid="uid://d43f4qy6kiom"]
 
 [ext_resource type="Script" uid="uid://js6yq7xf7rlw" path="res://entities/projectile.gd" id="1_sxmqc"]
-[ext_resource type="Texture2D" uid="uid://wn1i5sww5fk5" path="res://assets/projectiles/bullet/hit_vfx_00.png" id="2_0c7x6"]
-[ext_resource type="Texture2D" uid="uid://b4r3rhnlj8ec6" path="res://assets/projectiles/bullet/hit_vfx_01.png" id="3_wpwum"]
-[ext_resource type="Texture2D" uid="uid://btxuab13kso0" path="res://assets/projectiles/bullet/hit_vfx_02.png" id="4_nsmhe"]
+[ext_resource type="Texture2D" uid="uid://cmrtrdbyqhp4r" path="res://assets/projectiles/missile/idle_00.png" id="5_fha5r"]
 [ext_resource type="Texture2D" uid="uid://ohnea6uxvye8" path="res://assets/projectiles/shell/idle_00.png" id="5_wpwum"]
 [ext_resource type="Texture2D" uid="uid://b5y5o3adx70cp" path="res://assets/projectiles/shell/idle_01.png" id="6_nsmhe"]
+[ext_resource type="Texture2D" uid="uid://lrbggdqdcs5i" path="res://assets/projectiles/missile/idle_01.png" id="6_ydn77"]
 [ext_resource type="Texture2D" uid="uid://byc3lqd3dsu2j" path="res://assets/projectiles/shell/idle_02.png" id="7_1umjp"]
+[ext_resource type="Texture2D" uid="uid://cmrjds2db2k5n" path="res://assets/projectiles/missile/idle_02.png" id="7_hyjqk"]
 [ext_resource type="Texture2D" uid="uid://1lich2fn28a4" path="res://assets/projectiles/shell/idle_03.png" id="8_se2ie"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dgwo2"]
 radius = 7.0
 height = 14.0
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_dac07"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_46mfb"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_0c7x6")
+"texture": ExtResource("5_fha5r")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_wpwum")
+"texture": ExtResource("6_ydn77")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_nsmhe")
+"texture": ExtResource("7_hyjqk")
 }],
 "loop": true,
-"name": &"hit",
+"name": &"missle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -43,7 +43,7 @@ animations = [{
 "texture": ExtResource("8_se2ie")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"shell",
 "speed": 5.0
 }]
 
@@ -56,10 +56,7 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_dgwo2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_dac07")
-animation = &"idle"
-frame_progress = 0.222127
-metadata/_edit_lock_ = true
+sprite_frames = SubResource("SpriteFrames_46mfb")
+animation = &"shell"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

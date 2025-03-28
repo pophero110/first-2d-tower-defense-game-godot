@@ -86,6 +86,7 @@ func place_tower(tile_pos: Vector2i):
 		var tower = tower_scene.instantiate()
 		tower.ability = tower_ability
 		add_child(tower)
+		tower.add_child(tower_ability)
 		# Position the tower at the center of the tile
 		var world_pos = ground_tilemap.map_to_local(tile_pos)
 		tower.global_position = world_pos
@@ -94,9 +95,9 @@ func place_tower(tile_pos: Vector2i):
 		
 func get_random_ability():
 	var abilities = [
-		{"scene_name": "dual_fire", "rank": 20},
-		{"scene_name": "rapid_fire", "rank": 10},
-		{"scene_name": "ultimate_blast", "rank": 1}
+		{"scene_name": "rapid_fire", "rank": 1},
+		{"scene_name": "dual_fire", "rank": 1},
+		{"scene_name": "explosive_missle", "rank": 30}
 	]
 
 	# Create a weighted list based on rank
@@ -146,6 +147,9 @@ func update_ui():
 	var atk_rate_cost = calculate_cost(attack_rate, 50, 1.15)
 	var atk_range_cost = calculate_cost(attack_range, 50, 1.01)
 	# Update button colors based on gold availability
+	inc_attack_damage_button.text = "Upgrade($%s)" % atk_dmg_cost
+	inc_attack_speed_button.text = "Upgrade($%s)" % atk_rate_cost
+	inc_attack_range_button.text = "Upgrade($%s)" % atk_range_cost
 	update_button_style(inc_attack_speed_button, gold >= atk_rate_cost)
 	update_button_style(inc_attack_damage_button, gold >= atk_dmg_cost)
 	update_button_style(inc_attack_range_button, gold >= atk_range_cost)
@@ -229,13 +233,12 @@ func _on_start_game_pressed():
 	$Menu.hide()
 	$SpawnTimer.start()
 	tower_ability = get_random_ability()
-	ability_shout_out_label.text = "E-Rank Ability\n" + tower_ability.display_name
+	ability_shout_out_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
 	$UI/AnimationPlayer.play("ability_shout_out")
 	$UI/AnimationPlayer.animation_finished.connect(_on_ability_shout_out_animation_finished)
 
 func _on_ability_shout_out_animation_finished(animation_name):
-	print("123")
-	ability_label.text = "E-Rank Ability\n" + tower_ability.display_name
+	ability_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
 
 func _on_game_over():
 	isGameStarted = false
