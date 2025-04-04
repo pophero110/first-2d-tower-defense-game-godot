@@ -21,7 +21,7 @@ extends Node2D
 @onready var error_dialog = $UI/ErrorDialog  # Reference the error popup
 
 var towers = []
-var gold: int = 5000
+var gold: int = 150
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
