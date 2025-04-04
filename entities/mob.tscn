@@ -208,7 +208,7 @@ script = ExtResource("9_ieysi")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gfurk")
 animation = &"tank_die"
-frame_progress = 0.541188
+frame_progress = 0.755016
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ieysi")

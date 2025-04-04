@@ -21,7 +21,7 @@ extends Node2D
 @onready var error_dialog = $UI/ErrorDialog  # Reference the error popup
 
 var towers = []
-var gold: int = 50
+var gold: int = 5000
 var attack_rate: float = 1
 var attack_damage: float = 10
 var attack_range: float = 150
@@ -37,7 +37,7 @@ var enemy_count: int = 10
 var isGameStarted: bool = false
 signal game_over
 
-var mob_max_health: int = 10000
+var mob_max_health: int = 30
 
 func _ready():
 	update_ui()
@@ -84,7 +84,11 @@ func is_tower_at_position(tile_pos: Vector2i) -> bool:
 	
 func place_tower(tile_pos: Vector2i):
 		var tower = tower_scene.instantiate()
-		var copied_tower_ability = tower_ability.duplicate()
+		var copied_tower_ability = get_random_ability()
+		tower_ability = copied_tower_ability
+		ability_shout_out_label.text = "%s-Rank Ability\n%s" % [copied_tower_ability.rank, copied_tower_ability.display_name]
+		$UI/GameStartAnimation.stop()
+		$UI/GameStartAnimation.play("ability_shout_out")
 		tower.ability = copied_tower_ability
 		add_child(tower)
 		tower.add_child(copied_tower_ability)
@@ -96,9 +100,9 @@ func place_tower(tile_pos: Vector2i):
 		
 func get_random_ability():
 	var abilities = [
-		{"scene_name": "rapid_fire", "rank": 1},
-		{"scene_name": "dual_fire", "rank": 1},
-		{"scene_name": "explosive_missle", "rank": 30}
+		{"scene_name": "rapid_fire", "rank": 10},
+		{"scene_name": "dual_fire", "rank": 10},
+		{"scene_name": "explosive_missle", "rank": 1}
 	]
 
 	# Create a weighted list based on rank
@@ -234,9 +238,6 @@ func _on_start_game_pressed():
 	$Menu.hide()
 	$SpawnTimer.start()
 	$WaveTimer.start()
-	tower_ability = get_random_ability()
-	ability_shout_out_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
-	$UI/GameStartAnimation.play("ability_shout_out")
 	
 func _on_game_over():
 	isGameStarted = false
@@ -266,5 +267,5 @@ func start_next_wave():
 func _on_wave_timer_timeout():
 	start_next_wave()
 
-func _on_game_start_animation_animation_finished():
+func _on_game_start_animation_animation_finished(animation):
 	ability_label.text = "%s-Rank Ability\n%s" % [tower_ability.rank, tower_ability.display_name]
