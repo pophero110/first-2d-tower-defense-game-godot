@@ -8,7 +8,7 @@ extends Node2D
 @export var number_of_projectile: int = 1
 @export var ability: Node = null
 @export var ability_cooldown_in_seconds: float = 10
-@onready var detectorCollisionCircle = $Detector/CollisionShape2D
+@onready var detector_collision_shape = $Detector/CollisionShape2D
 @onready var ability_cooldown_progress_bar = $AbilityCooldownProgressBar
 
 var enemies = []  # List of enemies within the attack range3r
@@ -18,7 +18,7 @@ var target: Node2D = null
 # Draw the attack range as a red circle
 func _draw():
 	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
-	detectorCollisionCircle.shape.radius = attack_range
+	detector_collision_shape.shape.radius = attack_range
 
 # Called when the node enters the scene tree for the first time
 func _ready():
