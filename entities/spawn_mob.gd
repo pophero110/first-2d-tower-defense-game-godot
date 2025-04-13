@@ -1,8 +1,11 @@
 extends Node2D
 
 @export var mob_scene: PackedScene
-@export var player: CharacterBody2D
+@onready var player = $Player
 @onready var mob_spawn_location = $Path2D/PathFollow2D
+
+func _ready():
+	player.died.connect(_on_player_die)
 
 func _process(delta):
 	pass
@@ -12,3 +15,6 @@ func _on_spawn_timer_timeout():
 	mob_spawn_location.progress_ratio = randf()
 	mob.position = mob_spawn_location.position
 	add_child(mob)
+	
+func _on_player_die():
+	print("player died")

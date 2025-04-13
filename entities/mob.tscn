@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cmkwopufoodck"]
+[gd_scene load_steps=28 format=3 uid="uid://cmkwopufoodck"]
 
 [ext_resource type="Texture2D" uid="uid://ca5yac85n8rgn" path="res://assets/enemies/infantry/tier1/move_00.png" id="1_gfurk"]
 [ext_resource type="Texture2D" uid="uid://cd61tf1stxrub" path="res://assets/enemies/infantry/tier1/shoot_00.png" id="2_4bycw"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://bhn64v63wojtn" path="res://entities/mob.gd" id="9_ieysi"]
 [ext_resource type="AudioStream" uid="uid://bsd77i4w24a2" path="res://assets/sounds/male-death-sound-128357.mp3" id="17_h0ign"]
 [ext_resource type="Texture2D" uid="uid://7l1o0xanef4n" path="res://assets/enemies/infantry/tier1/shoot_fx_00.png" id="24_0v4lk"]
+[ext_resource type="PackedScene" uid="uid://c61rkkl5w5y7s" path="res://entities/health_bar.tscn" id="24_ppg3o"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfurk"]
 animations = [{
@@ -130,6 +131,8 @@ collision_mask = 0
 script = ExtResource("9_ieysi")
 projectile_scene = ExtResource("2_bhys4")
 
+[node name="HeathBar" parent="." instance=ExtResource("24_ppg3o")]
+
 [node name="Shooter" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gfurk")
 animation = &"shoot"
@@ -147,14 +150,6 @@ frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ieysi")
-
-[node name="HealthBar" type="ProgressBar" parent="."]
-z_index = 1
-offset_left = -24.0
-offset_top = -40.0
-offset_right = 24.0
-offset_bottom = -32.0
-show_percentage = false
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_h0ign")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ddaeqxn4bccn8"]
+[gd_scene load_steps=13 format=3 uid="uid://ddaeqxn4bccn8"]
 
 [ext_resource type="Script" uid="uid://m18uttbvq4hi" path="res://player.gd" id="1_b26j0"]
 [ext_resource type="Texture2D" uid="uid://ca5yac85n8rgn" path="res://assets/enemies/infantry/tier1/move_00.png" id="1_dw050"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b47tc47b2eudq" path="res://assets/enemies/infantry/tier1/move_05.png" id="6_urp6f"]
 [ext_resource type="Texture2D" uid="uid://bijwfmjkgdfsh" path="res://assets/enemies/infantry/tier1/move_06.png" id="7_bwjto"]
 [ext_resource type="Texture2D" uid="uid://bdlt5vb1br1sx" path="res://assets/enemies/infantry/tier1/move_07.png" id="8_606se"]
+[ext_resource type="PackedScene" uid="uid://c61rkkl5w5y7s" path="res://entities/health_bar.tscn" id="10_n7ghd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_u1c27"]
 animations = [{
@@ -60,3 +61,6 @@ animation = &"walk"
 shape = SubResource("CircleShape2D_dw050")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="HealthBar" parent="." instance=ExtResource("10_n7ghd")]
+max_health = 60
