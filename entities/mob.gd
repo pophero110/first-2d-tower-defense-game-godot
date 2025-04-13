@@ -1,10 +1,14 @@
 extends CharacterBody2D
 
 @export var projectile_scene: PackedScene
+@export var move_speed = 5000
+@export var attack_range = 100
+
 @onready var health_bar = $HeathBar
 @onready var attack_timer = $AttackTimer
 @onready var shooter = $Shooter
 @onready var muzzle = $Shooter/Muzzle
+@onready var agent = $NavigationAgent2D
 
 var player: Node2D
 var attack_rate = 2.0
@@ -33,26 +37,26 @@ func _process(delta):
 			chase_player(delta)
 		MOB_STATE.ATTACK:
 			attack_player(delta)
-
-func set_muzzle_to_front():
-	# Calculate a position in front of the mob based on its rotation
-	var offset = Vector2(30, 15).rotated(rotation)
-	# Position the muzzle in front of the mob and align its rotation
-	muzzle.global_position = global_position + offset
-	muzzle.rotation = rotation
 		
 func chase_player(delta):
 	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player < 200:  # Set your attack range threshold
+	if distance_to_player < attack_range:  # Set your attack range threshold
 		current_state = MOB_STATE.ATTACK
 		return
 
-	var direction = (player.global_position - global_position).normalized()
-	position += direction * 100 * delta
+	agent.set_target_position(player.global_position)
+	if agent.is_navigation_finished(): return
+	var next_path_position = agent.get_next_path_position()
+	var new_velocity = global_position.direction_to(next_path_position) * move_speed * delta
+	if agent.avoidance_enabled:
+		agent.set_velocity(new_velocity)
+	else:
+		_on_navigation_agent_2d_velocity_computed(new_velocity)
+	move_and_slide()
 
 func attack_player(delta):
 	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player >= 200:
+	if distance_to_player >= attack_range:
 		current_state = MOB_STATE.CHASE
 		shooter.play("move")
 	elif attack_timer.is_stopped():
@@ -60,6 +64,13 @@ func attack_player(delta):
 		play_shoot_animation()
 		fire_projectile()
 		
+func set_muzzle_to_front():
+	# Calculate a position in front of the mob based on its rotation
+	var offset = Vector2(30, 15).rotated(rotation)
+	# Position the muzzle in front of the mob and align its rotation
+	muzzle.global_position = global_position + offset
+	muzzle.rotation = rotation
+	
 func fire_projectile():
 	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
 	projectile._initialize(player, 20, "bullet")
@@ -80,10 +91,13 @@ func take_damage(amout):
 	
 func _on_mob_died():
 	$DeathSound.play()
-	$AnimatedSprite2D.play("die")
+	shooter.play("die")
 	died.emit()
 	get_parent().set_process(false)
-	$AnimatedSprite2D.animation_finished.connect(_on_die_animation_finished)
+	shooter.animation_finished.connect(_on_die_animation_finished)
 	
 func _on_die_animation_finished():
 	get_parent().queue_free() # Remove mob and also PathFollow2D
+
+func _on_navigation_agent_2d_velocity_computed(safe_velocity):
+	velocity = safe_velocity

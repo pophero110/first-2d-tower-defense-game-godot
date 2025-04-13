@@ -39,7 +39,7 @@ func _process(_delta):
 	# TODO: potential optimazation
 	ability_cooldown_progress_bar.rotation = -rotation
 	ability_cooldown_progress_bar.global_position = global_position + Vector2(-40, 40)
-	enemies = enemies.filter(func(enemy): return enemy.health > 0)
+	enemies = enemies.filter(func(enemy): return enemy.health_bar.current_health > 0)
 	if (enemies.is_empty()):
 		target = null
 		reset_tower_rotation()
