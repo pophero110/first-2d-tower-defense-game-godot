@@ -37,7 +37,7 @@ func _process(delta):
 
 func hit_target():
 	if target and is_instance_valid(target):
-		if (projectile_type == "missle"):
+		if projectile_type == "missle":
 			missle_explode()
 		else:
 			target.take_damage(damage)

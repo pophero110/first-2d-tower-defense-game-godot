@@ -1,12 +1,19 @@
 extends Node2D
 
 # === Nodes ===
-@onready var tree_tilemap = $Tree
+@export var tower_scene: PackedScene
+@export var mob_scene: PackedScene
+
+@onready var mob_spawn_location = $Player/MobPath/MobSpawnLocation
+@onready var ground_tilemaplayer = $GroundTileMapLayer
+@onready var resource_tilemaplayer = $ResourceTileMapLayer
 @onready var player = $Player
 @onready var collect_timer = $CollectTimer
 @onready var collect_bar = $Player/CollectBar
 @onready var tile_highlight = $TileHighlight
 @onready var collect_indicator = $CollectIndicator
+@onready var wood_resource_label = $Player/HUD/WoodResource
+@onready var stone_resource_label = $Player/HUD/StoneResource
 
 # === Settings ===
 var collect_distance = 120.0
@@ -18,6 +25,12 @@ var highlight_color_far = Color(1, 0, 0, 0.4)
 var is_collecting = false
 var current_target_cell = null
 var player_collect_start_pos = Vector2.ZERO
+var current_resource_type = ""
+var towers = []
+
+# === Resource ===
+var wood_resource = 5000
+var stone_resource = 0
 
 # === Lifecycle ===
 func _ready():
@@ -39,29 +52,51 @@ func _process(delta):
 # === Input ===
 func _input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if is_collecting:
-			return
+		var mouse_pos = resource_tilemaplayer.get_local_mouse_position()
+		var resource_cell = resource_tilemaplayer.local_to_map(mouse_pos)
+		var resource_tile_data = resource_tilemaplayer.get_cell_tile_data(resource_cell)
 
-		var mouse_pos = tree_tilemap.get_local_mouse_position()
-		var cell = tree_tilemap.local_to_map(mouse_pos)
-		var tile_data = tree_tilemap.get_cell_tile_data(cell)
+		var groud_cell = ground_tilemaplayer.local_to_map(mouse_pos)
+		var groud_tile_data = ground_tilemaplayer.get_cell_tile_data(groud_cell)
+		
+		if resource_tile_data and !is_collecting:
+			var resource_tile_pos = resource_tilemaplayer.map_to_local(resource_cell)
+			var resource_tile_world_pos = resource_tilemaplayer.to_global(resource_tile_pos)
 
-		if tile_data:
-			var tile_pos = tree_tilemap.map_to_local(cell)
-			var world_pos = tree_tilemap.to_global(tile_pos)
-			var distance = player.global_position.distance_to(world_pos)
-
-			tile_highlight.global_position = world_pos - tile_highlight.size / 2
+			tile_highlight.global_position = resource_tile_world_pos - tile_highlight.size / 2
 			tile_highlight.visible = true
+			
+			current_resource_type = resource_tile_data.get_custom_data("type")
 
-			if distance <= collect_distance:
+			var resource_distance = player.global_position.distance_to(resource_tile_pos)
+			if resource_distance <= collect_distance:
 				tile_highlight.color = highlight_color_near
 				collect_indicator.global_position = tile_highlight.global_position
 				collect_indicator.visible = true
-				start_collection(cell)
+				start_collection(resource_cell)
 			else:
 				tile_highlight.color = highlight_color_far
 				collect_indicator.visible = false
+		elif groud_tile_data and groud_tile_data.get_custom_data("placable"):
+			if   (!is_tower_at_position(groud_cell) && wood_resource >= 50):
+				place_tower(groud_cell)
+				wood_resource -= 50
+				wood_resource_label.text = "Wood: %d" % wood_resource
+
+func is_tower_at_position(tile_pos: Vector2i) -> bool:
+	var world_pos = ground_tilemaplayer.map_to_local(tile_pos);
+	for tower in towers:
+		if tower.global_position == world_pos:
+			return true  # Tower already exists here
+	return false  # No tower at this position
+	
+func place_tower(tile_pos: Vector2i):
+	var tower = tower_scene.instantiate()
+	add_child(tower)
+	# Position the tower at the center of the tile
+	var world_pos = ground_tilemaplayer.map_to_local(tile_pos)
+	tower.global_position = world_pos
+	towers.append(tower)
 
 # === Collection Control ===
 func start_collection(cell):
@@ -91,10 +126,24 @@ func _on_collect_timer_timeout():
 	collect_bar.value = 0
 
 	if current_target_cell:
-		tree_tilemap.erase_cell(current_target_cell)
+		resource_tilemaplayer.erase_cell(current_target_cell)
 		current_target_cell = null
+
+		if current_resource_type == "wood":
+			wood_resource += 10
+			wood_resource_label.text = "Wood: %d" % wood_resource
+		elif current_resource_type == "stone":
+			stone_resource += 10
+			stone_resource_label.text = "Stone: %d" % stone_resource
+		current_resource_type = ""
 
 	tile_highlight.visible = false
 	collect_indicator.visible = false
-
-	print("Collection complete!")
+	
+#=== Mob Spawn ===
+func _on_mob_timer_timeout():
+	var mob = mob_scene.instantiate()
+	mob.player = player
+	mob_spawn_location.progress_ratio = randf()
+	mob.position = mob_spawn_location.position
+	add_child(mob)

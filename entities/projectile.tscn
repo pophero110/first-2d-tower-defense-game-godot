@@ -1,6 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://d43f4qy6kiom"]
+[gd_scene load_steps=14 format=3 uid="uid://d43f4qy6kiom"]
 
 [ext_resource type="Script" uid="uid://js6yq7xf7rlw" path="res://entities/projectile.gd" id="1_sxmqc"]
+[ext_resource type="Texture2D" uid="uid://bf0mil6d8volr" path="res://assets/projectiles/bullet/idle_00.png" id="2_fha5r"]
+[ext_resource type="Texture2D" uid="uid://dbqyosagvpaia" path="res://assets/projectiles/bullet/idle_01.png" id="3_ydn77"]
+[ext_resource type="Texture2D" uid="uid://dsec4fsb0en1n" path="res://assets/projectiles/bullet/idle_02.png" id="4_hyjqk"]
 [ext_resource type="Texture2D" uid="uid://cmrtrdbyqhp4r" path="res://assets/projectiles/missile/idle_00.png" id="5_fha5r"]
 [ext_resource type="Texture2D" uid="uid://ohnea6uxvye8" path="res://assets/projectiles/shell/idle_00.png" id="5_wpwum"]
 [ext_resource type="Texture2D" uid="uid://b5y5o3adx70cp" path="res://assets/projectiles/shell/idle_01.png" id="6_nsmhe"]
@@ -15,6 +18,20 @@ height = 14.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_46mfb"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fha5r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ydn77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hyjqk")
+}],
+"loop": true,
+"name": &"bullet",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("5_fha5r")
@@ -57,6 +74,6 @@ shape = SubResource("CapsuleShape2D_dgwo2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_46mfb")
-animation = &"shell"
+animation = &"bullet"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

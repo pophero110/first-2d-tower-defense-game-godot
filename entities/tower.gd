@@ -29,10 +29,10 @@ func _ready():
 	timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(timer)
 	
-	ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
-	ability.tower = self
-	ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
-	ability_cooldown_progress_bar.max_value = ability_cooldown_in_seconds
+	#ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
+	#ability.tower = self
+	#ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
+	#ability_cooldown_progress_bar.max_value = ability_cooldown_in_seconds
 
 # Called every frame to update the state
 func _process(_delta):
@@ -74,7 +74,7 @@ func _on_attack_timer_timeout():
 
 func attack():
 	$ShootSound.play()
-	ability.activate(ability_cooldown_in_seconds)
+	#ability.activate(ability_cooldown_in_seconds)
 	fire_projectile()
 	play_shoot_animation()
 

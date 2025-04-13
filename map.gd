@@ -83,20 +83,20 @@ func is_tower_at_position(tile_pos: Vector2i) -> bool:
 	return false  # No tower at this position
 	
 func place_tower(tile_pos: Vector2i):
-		var tower = tower_scene.instantiate()
-		var copied_tower_ability = get_random_ability()
-		tower_ability = copied_tower_ability
-		ability_shout_out_label.text = "%s-Rank Ability\n%s" % [copied_tower_ability.rank, copied_tower_ability.display_name]
-		$UI/GameStartAnimation.stop()
-		$UI/GameStartAnimation.play("ability_shout_out")
-		tower.ability = copied_tower_ability
-		add_child(tower)
-		tower.add_child(copied_tower_ability)
-		# Position the tower at the center of the tile
-		var world_pos = ground_tilemap.map_to_local(tile_pos)
-		tower.global_position = world_pos
-		towers.append(tower)
-		update_tower_stats()
+	var tower = tower_scene.instantiate()
+	var copied_tower_ability = get_random_ability()
+	tower_ability = copied_tower_ability
+	ability_shout_out_label.text = "%s-Rank Ability\n%s" % [copied_tower_ability.rank, copied_tower_ability.display_name]
+	$UI/GameStartAnimation.stop()
+	$UI/GameStartAnimation.play("ability_shout_out")
+	tower.ability = copied_tower_ability
+	add_child(tower)
+	tower.add_child(copied_tower_ability)
+	# Position the tower at the center of the tile
+	var world_pos = ground_tilemap.map_to_local(tile_pos)
+	tower.global_position = world_pos
+	towers.append(tower)
+	update_tower_stats()
 		
 func get_random_ability():
 	var abilities = [

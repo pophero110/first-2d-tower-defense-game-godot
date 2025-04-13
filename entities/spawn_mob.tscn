@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6jp2pvnvrn7m"]
+
+[ext_resource type="Script" uid="uid://c76q2bya1sdpq" path="res://entities/spawn_mob.gd" id="1_j6o2p"]
+[ext_resource type="PackedScene" uid="uid://cmkwopufoodck" path="res://entities/mob.tscn" id="2_e7l4x"]
+[ext_resource type="PackedScene" uid="uid://ddaeqxn4bccn8" path="res://player.tscn" id="3_85vij"]
+
+[sub_resource type="Curve2D" id="Curve2D_wnfov"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 128, 128, 0, 0, 0, 0, 704, 128, 0, 0, 0, 0, 704, 448, 0, 0, 0, 0, 128, 448, 0, 0, 0, 0, 128, 128)
+}
+point_count = 5
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_j6o2p")
+mob_scene = ExtResource("2_e7l4x")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_wnfov")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(128, 128)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="Player" parent="." instance=ExtResource("3_85vij")]
+position = Vector2(408, 280)
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

@@ -1,50 +1,28 @@
-[gd_scene load_steps=48 format=3 uid="uid://cmkwopufoodck"]
+[gd_scene load_steps=27 format=3 uid="uid://cmkwopufoodck"]
 
 [ext_resource type="Texture2D" uid="uid://ca5yac85n8rgn" path="res://assets/enemies/infantry/tier1/move_00.png" id="1_gfurk"]
+[ext_resource type="Texture2D" uid="uid://cd61tf1stxrub" path="res://assets/enemies/infantry/tier1/shoot_00.png" id="2_4bycw"]
+[ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://entities/projectile.tscn" id="2_bhys4"]
 [ext_resource type="Texture2D" uid="uid://d1qw5v5llr5ht" path="res://assets/enemies/infantry/tier1/die_00.png" id="2_h0ign"]
 [ext_resource type="Texture2D" uid="uid://b6i1emastvupa" path="res://assets/enemies/infantry/tier1/move_01.png" id="2_ieysi"]
 [ext_resource type="Texture2D" uid="uid://dk5vbygxo1v3g" path="res://assets/enemies/infantry/tier1/die_01.png" id="3_6ak38"]
 [ext_resource type="Texture2D" uid="uid://b8unit5kja48m" path="res://assets/enemies/infantry/tier1/move_02.png" id="3_cixyi"]
 [ext_resource type="Texture2D" uid="uid://d0sjwqto7mfmw" path="res://assets/enemies/infantry/tier1/move_03.png" id="4_7ulmv"]
 [ext_resource type="Texture2D" uid="uid://becov0l8pvmjy" path="res://assets/enemies/infantry/tier1/die_02.png" id="4_rxhkm"]
+[ext_resource type="Texture2D" uid="uid://dtrniwn6i5lvy" path="res://assets/enemies/infantry/tier1/shoot_03.png" id="5_1kk3h"]
 [ext_resource type="Texture2D" uid="uid://dn8870l5fmxnx" path="res://assets/enemies/infantry/tier1/die_03.png" id="5_mhy1y"]
 [ext_resource type="Texture2D" uid="uid://c6tei2a1r847o" path="res://assets/enemies/infantry/tier1/move_04.png" id="5_pcqmr"]
 [ext_resource type="Texture2D" uid="uid://6ix8dqse55fv" path="res://assets/enemies/infantry/tier1/die_04.png" id="6_gy8bd"]
 [ext_resource type="Texture2D" uid="uid://b47tc47b2eudq" path="res://assets/enemies/infantry/tier1/move_05.png" id="6_jbnni"]
+[ext_resource type="Texture2D" uid="uid://dc0d82sps2esp" path="res://assets/enemies/infantry/tier1/shoot_04.png" id="6_tjdwh"]
+[ext_resource type="Texture2D" uid="uid://bxqwqtg5tut0h" path="res://assets/enemies/infantry/tier1/shoot_05.png" id="7_45mtu"]
 [ext_resource type="Texture2D" uid="uid://dyp8lc0wliu34" path="res://assets/enemies/infantry/tier1/die_05.png" id="7_srff1"]
 [ext_resource type="Texture2D" uid="uid://bijwfmjkgdfsh" path="res://assets/enemies/infantry/tier1/move_06.png" id="7_yscv0"]
 [ext_resource type="Texture2D" uid="uid://bdlt5vb1br1sx" path="res://assets/enemies/infantry/tier1/move_07.png" id="8_eqsov"]
 [ext_resource type="Texture2D" uid="uid://cxsa66s42j8yb" path="res://assets/enemies/infantry/tier1/die_06.png" id="8_hpl8x"]
 [ext_resource type="Script" uid="uid://bhn64v63wojtn" path="res://entities/mob.gd" id="9_ieysi"]
-[ext_resource type="Texture2D" uid="uid://2i8tgt1sh04u" path="res://assets/enemies/tank/tier1/base_die_00.png" id="17_fd55b"]
 [ext_resource type="AudioStream" uid="uid://bsd77i4w24a2" path="res://assets/sounds/male-death-sound-128357.mp3" id="17_h0ign"]
-[ext_resource type="Texture2D" uid="uid://d326fwqeapdrt" path="res://assets/enemies/tank/tier1/base_die_01.png" id="18_yy54u"]
-[ext_resource type="Texture2D" uid="uid://b2khte2dthm1t" path="res://assets/enemies/tank/tier1/base_die_02.png" id="19_yfjy3"]
-[ext_resource type="Texture2D" uid="uid://i6hl13aus272" path="res://assets/enemies/tank/tier1/base_die_03.png" id="20_vjfqx"]
-[ext_resource type="Texture2D" uid="uid://chur6cs0nrf00" path="res://assets/enemies/tank/tier1/base_die_04.png" id="21_ghwlx"]
-[ext_resource type="Texture2D" uid="uid://dsobbrgfu7jhu" path="res://assets/enemies/tank/tier1/base_die_05.png" id="22_cv0cr"]
-[ext_resource type="Texture2D" uid="uid://dege8tjgjburb" path="res://assets/enemies/tank/tier1/base_die_06.png" id="23_3jbht"]
-[ext_resource type="Texture2D" uid="uid://xa55nqxqa71i" path="res://assets/enemies/tank/tier1/base_die_07.png" id="24_dn4lk"]
-[ext_resource type="Texture2D" uid="uid://b463rp57076dy" path="res://assets/enemies/tank/tier1/base_die_08.png" id="25_rb1br"]
-[ext_resource type="Texture2D" uid="uid://bx6jmdxb0kmu6" path="res://assets/enemies/tank/tier1/base_die_09.png" id="26_piaap"]
-[ext_resource type="Texture2D" uid="uid://0nkewy0g68bx" path="res://assets/enemies/tank/tier1/base_die_10.png" id="27_j4prg"]
-[ext_resource type="Texture2D" uid="uid://n2t8ytthrytq" path="res://assets/enemies/tank/tier1/base_die_11.png" id="28_xp5ar"]
-[ext_resource type="Texture2D" uid="uid://cpjwk6lga1ixi" path="res://assets/enemies/tank/tier1/base_die_12.png" id="29_c2fcg"]
-[ext_resource type="Texture2D" uid="uid://36cgf03mncek" path="res://assets/enemies/tank/tier1/base_move_00.png" id="29_fd55b"]
-[ext_resource type="Texture2D" uid="uid://74hidr28vq3l" path="res://assets/enemies/tank/tier1/base_die_13.png" id="30_75kdi"]
-[ext_resource type="Texture2D" uid="uid://djb33vuwgj2k4" path="res://assets/enemies/tank/tier1/base_move_01.png" id="30_yy54u"]
-[ext_resource type="Texture2D" uid="uid://dumwatav7l14r" path="res://assets/enemies/tank/tier1/base_die_14.png" id="31_sqy8l"]
-[ext_resource type="Texture2D" uid="uid://b83mo1n8ua1f" path="res://assets/enemies/tank/tier1/base_move_02.png" id="31_yfjy3"]
-[ext_resource type="Texture2D" uid="uid://cfxhcg8lbljtk" path="res://assets/enemies/tank/tier1/base_die_15.png" id="32_r0bum"]
-[ext_resource type="Texture2D" uid="uid://dnnntyaw5aqdb" path="res://assets/enemies/tank/tier1/base_move_03.png" id="32_vjfqx"]
-[ext_resource type="Texture2D" uid="uid://dxacvq0wm02b4" path="res://assets/enemies/tank/tier1/base_die_16.png" id="33_311pt"]
-[ext_resource type="Texture2D" uid="uid://goh1s70undkf" path="res://assets/enemies/tank/tier1/base_die_17.png" id="34_vovg5"]
-[ext_resource type="Texture2D" uid="uid://b0kwu6ji1ts52" path="res://assets/enemies/tank/tier1/base_die_18.png" id="35_bp1ox"]
-[ext_resource type="Texture2D" uid="uid://c4lg7ux47kq8d" path="res://assets/enemies/tank/tier1/base_die_19.png" id="36_ig5n7"]
-[ext_resource type="Texture2D" uid="uid://y0ovcnqh3meo" path="res://assets/enemies/tank/tier1/base_die_20.png" id="37_pxgaf"]
-[ext_resource type="Texture2D" uid="uid://cq03vlifxoinr" path="res://assets/enemies/tank/tier1/base_die_21.png" id="38_yijj7"]
-[ext_resource type="Texture2D" uid="uid://dbvd2acmknm25" path="res://assets/enemies/tank/tier1/base_die_22.png" id="39_0mxpr"]
-[ext_resource type="Texture2D" uid="uid://dhipetqtceefe" path="res://assets/enemies/tank/tier1/base_die_23.png" id="40_dphb5"]
+[ext_resource type="Texture2D" uid="uid://7l1o0xanef4n" path="res://assets/enemies/infantry/tier1/shoot_fx_00.png" id="24_0v4lk"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfurk"]
 animations = [{
@@ -73,6 +51,14 @@ animations = [{
 "loop": false,
 "name": &"die",
 "speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4bycw")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -105,110 +91,59 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("17_fd55b")
+"texture": ExtResource("5_1kk3h")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_yy54u")
+"texture": ExtResource("6_tjdwh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_yfjy3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_vjfqx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_ghwlx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_cv0cr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("23_3jbht")
-}, {
-"duration": 1.0,
-"texture": ExtResource("24_dn4lk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_rb1br")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_piaap")
-}, {
-"duration": 1.0,
-"texture": ExtResource("27_j4prg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("28_xp5ar")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_c2fcg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_75kdi")
-}, {
-"duration": 1.0,
-"texture": ExtResource("31_sqy8l")
-}, {
-"duration": 1.0,
-"texture": ExtResource("32_r0bum")
-}, {
-"duration": 1.0,
-"texture": ExtResource("33_311pt")
-}, {
-"duration": 1.0,
-"texture": ExtResource("34_vovg5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("35_bp1ox")
-}, {
-"duration": 1.0,
-"texture": ExtResource("36_ig5n7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("37_pxgaf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("38_yijj7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("39_0mxpr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("40_dphb5")
+"texture": ExtResource("7_45mtu")
 }],
-"loop": true,
-"name": &"tank_die",
+"loop": false,
+"name": &"shoot",
 "speed": 5.0
-}, {
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wdkx5"]
+animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("29_fd55b")
+"texture": null
 }, {
 "duration": 1.0,
-"texture": ExtResource("30_yy54u")
+"texture": ExtResource("24_0v4lk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("31_yfjy3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("32_vjfqx")
+"texture": null
 }],
-"loop": true,
-"name": &"tank_move",
-"speed": 5.0
+"loop": false,
+"name": &"muzzle_flash",
+"speed": 15.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ieysi"]
 radius = 32.0
 
 [node name="Mob" type="CharacterBody2D" groups=["mob"]]
+collision_layer = 0
 collision_mask = 0
 script = ExtResource("9_ieysi")
+projectile_scene = ExtResource("2_bhys4")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Shooter" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gfurk")
-animation = &"tank_die"
-frame_progress = 0.755016
+animation = &"shoot"
+
+[node name="Muzzle" type="Marker2D" parent="Shooter"]
+position = Vector2(48, 16)
+
+[node name="MuzzleFlash" type="AnimatedSprite2D" parent="."]
+position = Vector2(54, 13.5)
+scale = Vector2(1.5, 1.42308)
+sprite_frames = SubResource("SpriteFrames_wdkx5")
+animation = &"muzzle_flash"
+frame = 2
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ieysi")
@@ -223,3 +158,9 @@ show_percentage = false
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_h0ign")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
