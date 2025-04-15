@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="first-2d-tower-defense-game"
-run/main_scene="uid://c4pkhcnyesfot"
+run/main_scene="uid://dq6ypyb8epxqn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="viewport"
 
 [input]
@@ -48,7 +48,9 @@ move_right={
 
 2d_physics/layer_1="mob"
 2d_physics/layer_2="player"
-2d_physics/layer_3="object"
+2d_physics/layer_3="resource"
+2d_physics/layer_4="building"
+2d_physics/layer_5="boundary"
 
 [rendering]
 

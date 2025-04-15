@@ -10,10 +10,13 @@ extends Node2D
 @export var ability_cooldown_in_seconds: float = 10
 @onready var detector_collision_shape = $Detector/CollisionShape2D
 @onready var ability_cooldown_progress_bar = $AbilityCooldownProgressBar
+@onready var health_bar = $HealthBar
 
 var enemies = []  # List of enemies within the attack range3r
 var timer: Timer = null
 var target: Node2D = null
+
+signal died
 
 # Draw the attack range as a red circle
 func _draw():
@@ -28,7 +31,7 @@ func _ready():
 	timer.autostart = true
 	timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(timer)
-	
+	health_bar.died.connect(_on_tower_died)
 	#ability.ability_cooldown_progress_bar = ability_cooldown_progress_bar
 	#ability.tower = self
 	#ability_cooldown_progress_bar.value = ability_cooldown_in_seconds
@@ -102,3 +105,9 @@ func _on_detector_body_entered(body):
 
 func _on_detector_body_exited(body):
 	enemies.erase(body)
+
+func take_damage(amout):
+	health_bar.take_damage(amout)
+	
+func _on_tower_died():
+	queue_free()

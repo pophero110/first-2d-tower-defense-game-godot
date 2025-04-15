@@ -1,17 +1,19 @@
 extends CharacterBody2D
 
 @export var projectile_scene: PackedScene
-@export var move_speed = 5000
-@export var attack_range = 100
+@export var move_speed = 10000
+@export var attack_range = 150
 
 @onready var health_bar = $HeathBar
 @onready var attack_timer = $AttackTimer
 @onready var shooter = $Shooter
 @onready var muzzle = $Shooter/Muzzle
-@onready var agent = $NavigationAgent2D
+@onready var agent: NavigationAgent2D = $NavigationAgent2D
 
-var player: Node2D
+var player: Node2D = null
 var attack_rate = 2.0
+var current_target = null
+var locked_blocking_target = null
 
 signal died
 
@@ -25,26 +27,37 @@ enum MOB_STATE {
 func _ready():
 	shooter.play("move")
 	health_bar.died.connect(_on_mob_died)
-	
-func _process(delta):	
+
+func _process(delta):
 	if player == null:
 		player = get_tree().get_first_node_in_group("player")
-		return
+	
+	if is_target_reachable(player):
+		locked_blocking_target = null
+		current_target = player
+	else:
+		if locked_blocking_target == null or is_target_reachable(locked_blocking_target):
+			locked_blocking_target = find_blocking_building()
+		current_target = locked_blocking_target
+		
+	assert(current_target != null)
+		
+	look_at(current_target.global_position)
 	set_muzzle_to_front()
-	look_at(player.global_position)
+
 	match current_state:
 		MOB_STATE.CHASE:
-			chase_player(delta)
+			chase_target(delta)
 		MOB_STATE.ATTACK:
-			attack_player(delta)
+			attack_target(delta)
 		
-func chase_player(delta):
-	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player < attack_range:  # Set your attack range threshold
+func chase_target(delta):
+	var distance_to_target = global_position.distance_to(current_target.global_position)
+	if distance_to_target < attack_range:  # Set your attack range threshold
 		current_state = MOB_STATE.ATTACK
 		return
 
-	agent.set_target_position(player.global_position)
+	agent.set_target_position(current_target.global_position)
 	if agent.is_navigation_finished(): return
 	var next_path_position = agent.get_next_path_position()
 	var new_velocity = global_position.direction_to(next_path_position) * move_speed * delta
@@ -54,9 +67,30 @@ func chase_player(delta):
 		_on_navigation_agent_2d_velocity_computed(new_velocity)
 	move_and_slide()
 
-func attack_player(delta):
-	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player >= attack_range:
+func _on_navigation_agent_2d_velocity_computed(safe_velocity):
+	velocity = safe_velocity
+
+func is_target_reachable(target: Node2D) -> bool:
+	agent.set_target_position(target.global_position)
+	agent.get_next_path_position()
+	return agent.is_target_reachable()
+
+func find_blocking_building() -> Node2D:
+	var buildings = get_tree().get_nodes_in_group("building")
+	var nearest_to_player: Node2D = null
+	var min_player_distance = INF
+
+	for building in buildings:
+		var dist_to_player = player.global_position.distance_to(building.global_position)
+		if dist_to_player < min_player_distance:
+			min_player_distance = dist_to_player
+			nearest_to_player = building
+
+	return nearest_to_player
+	
+func attack_target(delta):
+	var distance_to_target = global_position.distance_to(current_target.global_position)
+	if distance_to_target >= attack_range:
 		current_state = MOB_STATE.CHASE
 		shooter.play("move")
 	elif attack_timer.is_stopped():
@@ -73,7 +107,7 @@ func set_muzzle_to_front():
 	
 func fire_projectile():
 	var projectile = projectile_scene.instantiate()  # Create a new projectile instance
-	projectile._initialize(player, 20, "bullet")
+	projectile._initialize(current_target, 20, "bullet")
 	get_parent().add_child(projectile)  # Add it to the scene
 	projectile.position = muzzle.global_position
 
@@ -93,11 +127,9 @@ func _on_mob_died():
 	$DeathSound.play()
 	shooter.play("die")
 	died.emit()
-	get_parent().set_process(false)
+	set_process(false)
+	set_physics_process(false)
 	shooter.animation_finished.connect(_on_die_animation_finished)
 	
 func _on_die_animation_finished():
-	get_parent().queue_free() # Remove mob and also PathFollow2D
-
-func _on_navigation_agent_2d_velocity_computed(safe_velocity):
-	velocity = safe_velocity
+	queue_free()

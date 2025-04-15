@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cmbdbnu87us2l"]
+[gd_scene load_steps=18 format=3 uid="uid://cmbdbnu87us2l"]
 
 [ext_resource type="Script" uid="uid://ddwpsxohk3pxk" path="res://entities/tower.gd" id="1_20vcr"]
 [ext_resource type="PackedScene" uid="uid://d43f4qy6kiom" path="res://entities/projectile.tscn" id="2_erj2q"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://8qmemciwoyjp" path="res://assets/towers/cannon/tier1/gun_shoot_06.png" id="10_erj2q"]
 [ext_resource type="Texture2D" uid="uid://c5ydk57gjxsxa" path="res://assets/towers/cannon/tier1/gun_shoot_07.png" id="11_orfwx"]
 [ext_resource type="AudioStream" uid="uid://b1yvmtr2k424w" path="res://assets/sounds/gatling.wav" id="12_4hh3e"]
+[ext_resource type="PackedScene" uid="uid://c61rkkl5w5y7s" path="res://entities/health_bar.tscn" id="13_idgp8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1s3se"]
 bg_color = Color(0.314656, 0.608943, 0.955922, 1)
@@ -62,13 +63,14 @@ radius = 150.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hh3e"]
 size = Vector2(72, 64)
 
-[node name="Tower" type="StaticBody2D" groups=["tower"]]
-collision_layer = 4
-collision_mask = 3
+[node name="Tower" type="StaticBody2D" groups=["building", "tower"]]
+collision_layer = 8
+collision_mask = 15
 script = ExtResource("1_20vcr")
 projectile_scene = ExtResource("2_erj2q")
 
 [node name="AbilityCooldownProgressBar" type="ProgressBar" parent="."]
+visible = false
 offset_left = -40.0
 offset_top = 40.0
 offset_right = 32.0
@@ -95,6 +97,8 @@ volume_db = -16.6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, 0)
 shape = SubResource("RectangleShape2D_4hh3e")
+
+[node name="HealthBar" parent="." instance=ExtResource("13_idgp8")]
 
 [connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
 [connection signal="body_exited" from="Detector" to="." method="_on_detector_body_exited"]
