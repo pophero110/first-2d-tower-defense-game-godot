@@ -180,8 +180,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_301k8"]
-size = Vector2(112, 112)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_memvq"]
+size = Vector2(128, 128)
 
 [node name="StaticBody2D" type="StaticBody2D" groups=["building"]]
 collision_layer = 8
@@ -197,7 +197,7 @@ frame = 39
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_301k8")
+shape = SubResource("RectangleShape2D_memvq")
 
 [node name="HealthBar" parent="." instance=ExtResource("2_afsjk")]
 offset_left = -64.0
@@ -207,3 +207,6 @@ offset_bottom = -64.0
 health_bar_pos_offset = Vector2(-64, -64)
 health_bar_size = Vector2i(128, 10)
 metadata/_edit_use_anchors_ = true
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+vertices = PackedVector2Array(-64, -64, -64, 64, 64, 64, 64, -64)

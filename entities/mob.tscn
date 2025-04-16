@@ -122,8 +122,8 @@ animations = [{
 "speed": 15.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0v4lk"]
-size = Vector2(48, 48)
+[sub_resource type="CircleShape2D" id="CircleShape2D_0v4lk"]
+radius = 25.2982
 
 [node name="Mob" type="CharacterBody2D" groups=["mob"]]
 collision_mask = 15
@@ -150,7 +150,7 @@ frame = 2
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_0v4lk")
+shape = SubResource("CircleShape2D_0v4lk")
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_h0ign")
@@ -161,6 +161,7 @@ one_shot = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
+radius = 20.0
 debug_enabled = true
 
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

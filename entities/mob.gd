@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 @export var projectile_scene: PackedScene
-@export var move_speed = 10000
+@export var move_speed = 30000
 @export var attack_range = 150
+@export var detect_range = 1000
 
 @onready var health_bar = $HeathBar
 @onready var attack_timer = $AttackTimer
@@ -77,16 +78,16 @@ func is_target_reachable(target: Node2D) -> bool:
 
 func find_blocking_building() -> Node2D:
 	var buildings = get_tree().get_nodes_in_group("building")
-	var nearest_to_player: Node2D = null
-	var min_player_distance = INF
+	var nearest_building: Node2D = null
+	var min_distance = INF
 
 	for building in buildings:
-		var dist_to_player = player.global_position.distance_to(building.global_position)
-		if dist_to_player < min_player_distance:
-			min_player_distance = dist_to_player
-			nearest_to_player = building
+		var dist_to_building = global_position.distance_to(building.global_position)
+		if dist_to_building < min_distance:
+			min_distance = dist_to_building
+			nearest_building = building
 
-	return nearest_to_player
+	return nearest_building
 	
 func attack_target(delta):
 	var distance_to_target = global_position.distance_to(current_target.global_position)
@@ -133,3 +134,42 @@ func _on_mob_died():
 	
 func _on_die_animation_finished():
 	queue_free()
+
+
+# === find nearest target based on detect range
+#func _process(delta):
+	#if current_target == null or not is_instance_valid(current_target):
+		#current_target = find_nearest_target()
+		#
+	#if current_target == null:
+		#return  # No target found, skip processing
+		#
+	#if is_target_reachable(current_target):
+		#locked_blocking_target = null
+	#else:
+		#if locked_blocking_target == null or is_target_reachable(locked_blocking_target):
+			#locked_blocking_target = find_blocking_building()
+		#current_target = locked_blocking_target
+	#
+	#look_at(current_target.global_position)
+	#set_muzzle_to_front()
+#
+	#match current_state:
+		#MOB_STATE.CHASE:
+			#chase_target(delta)
+		#MOB_STATE.ATTACK:
+			#attack_target(delta)
+#
+#func find_nearest_target() -> Node2D:
+	#var all_targets = get_tree().get_nodes_in_group("player") + get_tree().get_nodes_in_group("building")
+	#var nearest: Node2D = null
+	#var min_dist = detect_range
+	#
+	#for target in all_targets:
+		#if not is_instance_valid(target): continue
+		#var dist = global_position.distance_to(target.global_position)
+		#if dist <= min_dist:
+			#min_dist = dist
+			#nearest = target
+	#
+	#return nearest
