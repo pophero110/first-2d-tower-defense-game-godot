@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxrwaa0pyo72"]
+
+[ext_resource type="Script" uid="uid://ysdd4ln21jbq" path="res://building_layer.gd" id="1_mjhl2"]
+
+[node name="BuildingLayer" type="Node2D"]
+script = ExtResource("1_mjhl2")
+build_mode = true
+
+[node name="TileHighlight" type="ColorRect" parent="."]
+visible = false
+offset_left = -360.0
+offset_top = -200.0
+offset_right = -232.0
+offset_bottom = -72.0
+color = Color(1, 0.392157, 0.392157, 0.498039)

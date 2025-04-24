@@ -15,11 +15,10 @@ extends Node2D
 @onready var collect_indicator = $CollectIndicator
 
 # === Game ===
+@onready var building_layer = $BuildingLayer
 @onready var day_night_timer = $DayNightTimer
-@onready var ground_tilemaplayer = $GroundTileMapLayer
+@onready var ground_tilemaplayer: TileMapLayer = $GroundTileMapLayer
 @onready var resource_tilemaplayer = $ResourceTileMapLayer
-@onready var tile_highlight = $TileHighlight
-@onready var build_preview: Sprite2D = $BuildingPreview
 @onready var mob_spawn_location = $MobPath/MobSpawnLocation
 @onready var navigation_region = $NavigationRegion2D
 
@@ -50,14 +49,14 @@ var stone_resource = 0
 
 # === Lifecycle ===
 func _ready():
-	tile_highlight.visible = false
 	collect_indicator.visible = false
-
 	collect_timer.wait_time = collect_time
 	collect_bar.visible = false
 	collect_bar.min_value = 0
 	collect_bar.max_value = collect_time
 	collect_bar.value = 0
+	
+	building_layer.placed_building.connect(_on_placed_building)
 
 func _process(delta):
 	if !day_night_timer.is_stopped():
@@ -69,108 +68,28 @@ func _process(delta):
 		collect_bar.value = collect_time - collect_timer.time_left
 		if player.global_position != player_collect_start_pos:
 			cancel_collection()
-	if build_mode:
-		var mouse_pos = ground_tilemaplayer.get_local_mouse_position()
-		var ground_cell = ground_tilemaplayer.local_to_map(mouse_pos)
-		var ground_tile_data = ground_tilemaplayer.get_cell_tile_data(ground_cell)
-		var ground_tile_pos = resource_tilemaplayer.map_to_local(ground_cell)
-		var ground_tile_world_pos = resource_tilemaplayer.to_global(ground_tile_pos)
-		
-		var resource_cell = resource_tilemaplayer.local_to_map(mouse_pos)
-		var resource_tile_data = resource_tilemaplayer.get_cell_tile_data(resource_cell)
-		if ground_tile_data:
-			tile_highlight.global_position = ground_tile_world_pos - tile_highlight.size / 2
-			tile_highlight.visible = true
-			build_preview.global_position = ground_tile_world_pos
-			build_preview.visible = true
-			if selected_building == Building.TOWER:
-				build_preview.scale = Vector2(1,1)
-				build_preview.texture = load("res://assets/towers/cannon/tier1/gun_idle_00.png")
-			elif selected_building == Building.WALL:
-				build_preview.scale = Vector2(0.333,0.333)
-				build_preview.texture = load("res://assets/objective/objective_idle_00.png")
-			if resource_tile_data == null and ground_tile_data.get_custom_data("placable"):
-				tile_highlight.color = highlight_color_green
-				buildable = true
-			else:
-				tile_highlight.color = highlight_color_red
-				buildable = false
 
-# === Input ===
-func _input(event):
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var mouse_pos = resource_tilemaplayer.get_local_mouse_position()
-		var resource_cell = resource_tilemaplayer.local_to_map(mouse_pos)
-		var resource_tile_data = resource_tilemaplayer.get_cell_tile_data(resource_cell)
-
-		var ground_cell = ground_tilemaplayer.local_to_map(mouse_pos)
-		var ground_tile_data = ground_tilemaplayer.get_cell_tile_data(ground_cell)
-		
-		if !build_mode and resource_tile_data and !is_collecting:
-			var resource_tile_pos = resource_tilemaplayer.map_to_local(resource_cell)
-			var resource_tile_world_pos = resource_tilemaplayer.to_global(resource_tile_pos)
-
-			tile_highlight.global_position = resource_tile_world_pos - tile_highlight.size / 2
-			tile_highlight.visible = true
-			collect_indicator.global_position = resource_tile_world_pos - tile_highlight.size / 2
-			collect_indicator.visible = true
-			
-			current_resource_type = resource_tile_data.get_custom_data("type")
-
-			var resource_distance = player.global_position.distance_to(resource_tile_pos)
-			if resource_distance <= collect_distance:
-				tile_highlight.color = highlight_color_green
-				start_collection(resource_cell)
-			else:
-				tile_highlight.color = highlight_color_red
-		elif buildable and build_mode and ground_tile_data and ground_tile_data.get_custom_data("placable"):
-			if (is_building_at_position(ground_cell)): 
-				print("Build: position occupied", ground_cell)
-				return
-			if selected_building == Building.TOWER:
-				if (wood_resource >= 50):
-					var tower = tower_scene.instantiate()
-					place_building(ground_cell, tower)
-					wood_resource -= 50
-					wood_resource_label.text = "Wood: %d" % wood_resource
-			elif selected_building == Building.WALL:
-				if (wood_resource >= 50):
-					var wall = wall_scene.instantiate()
-					place_building(ground_cell, wall)
-					wood_resource -= 50
-					wood_resource_label.text = "Wood: %d" % wood_resource
-
-func is_building_at_position(tile_pos: Vector2i) -> bool:
-	var world_pos = ground_tilemaplayer.map_to_local(tile_pos);
-	for building in buildings:
-		if building.global_position == world_pos:
-			return true  # Tower already exists here
-	return false  # No tower at this position
-	
-func place_building(tile_pos: Vector2i, building):
+# === Building System ===
+func _on_placed_building(building):
 	navigation_region.add_child(building)
-	# Position the tower at the center of the tile
-	var world_pos = ground_tilemaplayer.map_to_local(tile_pos)
-	building.global_position = world_pos
-	building.died.connect(_on_building_died)
-	buildings.append(building)
 	navigation_region.bake_navigation_polygon()
-	tile_highlight.visible = false
-	build_preview.visible = false
-	build_mode = false
-
+	building.died.connect(_on_building_died)
+	building_layer.build_mode = false
+	
 func _on_building_died(building):
 	await get_tree().process_frame
 	buildings.erase(building)
 	navigation_region.bake_navigation_polygon()
 	
 func _on_tower_pressed():
-	selected_building = Building.TOWER
 	build_mode = true
+	building_layer.build_mode = true
+	building_layer.selected_building_scene = load("res://entities/tower.tscn")
 
 func _on_wall_pressed():
-	selected_building = Building.WALL
 	build_mode = true
+	building_layer.build_mode = true
+	building_layer.selected_building_scene = load("res://entities/wall.tscn")
 
 # === Collection Control ===
 func start_collection(cell):
@@ -189,7 +108,6 @@ func cancel_collection():
 
 	collect_bar.visible = false
 	collect_bar.value = 0
-	tile_highlight.visible = false
 	collect_indicator.visible = false
 
 	print("Collection cancelled due to movement.")
@@ -210,8 +128,6 @@ func _on_collect_timer_timeout():
 			stone_resource += 10
 			stone_resource_label.text = "Stone: %d" % stone_resource
 		current_resource_type = ""
-
-	tile_highlight.visible = false
 	collect_indicator.visible = false
 	
 #=== Mob Spawn ===

@@ -136,7 +136,9 @@ projectile_scene = ExtResource("2_bhys4")
 
 [node name="Shooter" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gfurk")
-animation = &"shoot"
+animation = &"move"
+frame = 4
+frame_progress = 0.771127
 
 [node name="Muzzle" type="Marker2D" parent="Shooter"]
 position = Vector2(48, 16)

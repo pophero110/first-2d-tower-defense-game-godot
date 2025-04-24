@@ -15,16 +15,31 @@ extends Node2D
 var enemies = []  # List of enemies within the attack range3r
 var timer: Timer = null
 var target: Node2D = null
+@export var preview_mode = false
 
 signal died
 
 # Draw the attack range as a red circle
 func _draw():
-	draw_circle(Vector2.ZERO, attack_range, Color(1, 0, 0, 0.3))
+	if preview_mode or !is_inside_tree():
+		draw_circle(Vector2.ZERO, attack_range, Color(1, 1, 1, 0.05))
 	detector_collision_shape.shape.radius = attack_range
 
 # Called when the node enters the scene tree for the first time
 func _ready():
+	if preview_mode:
+		$AnimatedSprite2D.play("idle") # Optional: show idle animation in preview
+		$HealthBar.visible = false
+		$AbilityCooldownProgressBar.visible = false
+		$Detector.set_deferred("monitoring", false)
+		for child in get_children():
+			if child is CollisionShape2D or child is CollisionPolygon2D:
+				child.set_deferred("disabled", true)
+			elif child.has_node("CollisionShape2D"):
+				child.get_node("CollisionShape2D").set_deferred("disabled", true)
+		return
+	
+	$Detector.visible = false
 	# Initialize and set up the attack timer
 	timer = Timer.new()
 	timer.wait_time = attack_rate
@@ -39,6 +54,8 @@ func _ready():
 
 # Called every frame to update the state
 func _process(_delta):
+	if preview_mode:
+		return
 	# TODO: potential optimazation
 	ability_cooldown_progress_bar.rotation = -rotation
 	ability_cooldown_progress_bar.global_position = global_position + Vector2(-40, 40)
@@ -66,9 +83,13 @@ func _process(_delta):
 func rotate_towards_target():
 	var direction = target.global_position - global_position
 	rotation = direction.angle()
+	# negate parent's rotation to avoid baking NavigationRegion2D incorrectly
+	$CollisionShape2D.rotation = -rotation
 
 func reset_tower_rotation():
 	rotation = 0
+	# reset to avoid baking NavigationRegion2D incorrectly
+	$CollisionShape2D.rotation = 0 
 
 func _on_attack_timer_timeout():
 	timer.wait_time = self.attack_rate
